@@ -14,15 +14,24 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function LoginScreen() {
+export default function CreateAccountScreen() {
   const router = useRouter();
 
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleLogin = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+
+  const handleCreateAccount = () => {
+    if (!agreeTerms) {
+      alert("Please agree to the Terms & Conditions to proceed.");
+      return;
+    }
     router.replace("/(tabs)" as any);
   };
 
@@ -45,7 +54,7 @@ export default function LoginScreen() {
           {/* Centered Logo */}
           <View className="items-center mt-1 mb-2">
             <Image
-              source={require("../../assets/images/city-deals-logo.png")}
+              source={require("../../../assets/images/city-deals-logo.png")}
               className="h-12 w-40"
               resizeMode="contain"
             />
@@ -54,15 +63,33 @@ export default function LoginScreen() {
           {/* Heading */}
           <View className="items-center mb-4">
             <Text className="text-lg font-bold text-neutral-900 tracking-tight">
-              Welcome Back
+              Create Account
             </Text>
             <Text className="text-neutral-500 text-base text-center mt-1 max-w-xs">
-              Welcome back! Please enter your details to sign in to your account.
+              Let's get started! Please fill in the details below to create your
+              account.
             </Text>
           </View>
 
           {/* Form Fields */}
           <View className="gap-y-3">
+            {/* Full Name */}
+            <View>
+              <Text className="text-neutral-700 text-base font-semibold mb-1">
+                Full Name
+              </Text>
+              <View className="flex-row items-center border border-neutral-200 rounded-xl px-3.5 h-12 bg-white focus:border-orange-500">
+                <Feather name="user" size={18} color="#ea580c" />
+                <TextInput
+                  value={fullName}
+                  onChangeText={setFullName}
+                  placeholder="Enter your full name"
+                  placeholderTextColor="#9ca3af"
+                  className="flex-1 ml-2.5 text-neutral-900 text-base py-0"
+                />
+              </View>
+            </View>
+
             {/* Email Address */}
             <View>
               <Text className="text-neutral-700 text-base font-semibold mb-1">
@@ -77,6 +104,24 @@ export default function LoginScreen() {
                   placeholderTextColor="#9ca3af"
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  className="flex-1 ml-2.5 text-neutral-900 text-base py-0"
+                />
+              </View>
+            </View>
+
+            {/* Phone Number */}
+            <View>
+              <Text className="text-neutral-700 text-base font-semibold mb-1">
+                Phone Number
+              </Text>
+              <View className="flex-row items-center border border-neutral-200 rounded-xl px-3.5 h-12 bg-white focus:border-orange-500">
+                <Feather name="phone" size={18} color="#ea580c" />
+                <TextInput
+                  value={phone}
+                  onChangeText={setPhone}
+                  placeholder="Enter phone number"
+                  placeholderTextColor="#9ca3af"
+                  keyboardType="phone-pad"
                   className="flex-1 ml-2.5 text-neutral-900 text-base py-0"
                 />
               </View>
@@ -111,47 +156,68 @@ export default function LoginScreen() {
               </View>
             </View>
 
-            {/* Remember Me & Forgot Password */}
-            <View className="flex-row items-center justify-between mt-0.5">
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => setRememberMe(!rememberMe)}
-                className="flex-row items-center"
-              >
-                <View
-                  className={`w-5 h-5 rounded items-center justify-center border ${
-                    rememberMe
-                      ? "bg-orange-500 border-orange-500"
-                      : "border-neutral-300 bg-white"
-                  }`}
+            {/* Confirm Password */}
+            <View>
+              <Text className="text-neutral-700 text-base font-semibold mb-1">
+                Confirm Password
+              </Text>
+              <View className="flex-row items-center border border-neutral-200 rounded-xl px-3.5 h-12 bg-white focus:border-orange-500">
+                <Feather name="lock" size={18} color="#ea580c" />
+                <TextInput
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  placeholder="Confirm your password"
+                  placeholderTextColor="#9ca3af"
+                  secureTextEntry={!showConfirmPassword}
+                  className="flex-1 ml-2.5 text-neutral-900 text-base py-0"
+                />
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {rememberMe && (
-                    <Ionicons name="checkmark" size={14} color="white" />
-                  )}
-                </View>
-                <Text className="text-neutral-700 text-base ml-2">
-                  Remember me
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => alert("Forgot password pressed")}
-              >
-                <Text className="text-orange-600 font-semibold text-base">
-                  Forgot Password?
-                </Text>
-              </TouchableOpacity>
+                  <Feather
+                    name={showConfirmPassword ? "eye" : "eye-off"}
+                    size={18}
+                    color="#9ca3af"
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
-            {/* Log In CTA */}
+            {/* Terms & Conditions Checkbox */}
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => setAgreeTerms(!agreeTerms)}
+              className="flex-row items-center mt-0.5"
+            >
+              <View
+                className={`w-5 h-5 rounded items-center justify-center border ${
+                  agreeTerms
+                    ? "bg-orange-500 border-orange-500"
+                    : "border-neutral-300 bg-white"
+                }`}
+              >
+                {agreeTerms && (
+                  <Ionicons name="checkmark" size={14} color="white" />
+                )}
+              </View>
+              <Text className="text-neutral-700 text-base ml-2">
+                I agree to the{" "}
+                <Text className="text-orange-600 font-semibold">
+                  Terms & Conditions
+                </Text>
+              </Text>
+            </TouchableOpacity>
+
+            {/* Create Account CTA */}
             <TouchableOpacity
               activeOpacity={0.85}
-              onPress={handleLogin}
+              onPress={handleCreateAccount}
               className="w-full bg-orange-500 active:bg-orange-600 h-12 rounded-xl items-center justify-center shadow-md shadow-orange-500/25 mt-1"
             >
               <Text className="text-white font-bold text-lg tracking-wide">
-                Log In
+                Create Account
               </Text>
             </TouchableOpacity>
 
@@ -176,17 +242,17 @@ export default function LoginScreen() {
               </Text>
             </TouchableOpacity>
 
-            {/* Footer Sign Up Link */}
+            {/* Footer Log In Link */}
             <View className="flex-row justify-center items-center mt-1">
               <Text className="text-neutral-500 text-base">
-                Don't have an account?{" "}
+                Already have an account?{" "}
               </Text>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => router.push("/register" as any)}
+                onPress={() => router.push("/login" as any)}
               >
                 <Text className="text-orange-600 font-bold text-base">
-                  Sign Up
+                  Log In
                 </Text>
               </TouchableOpacity>
             </View>

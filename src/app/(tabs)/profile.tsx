@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import CurvedHeader from "../_components/CurvedHeader";
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -17,17 +18,8 @@ export default function ProfileScreen() {
     <View className="flex-1 bg-neutral-50">
       <StatusBar style="light" />
 
-      {/* Deep Navy Top Header with Line/Star Background */}
-      <View className="relative bg-[#0f3b5e] pt-14 pb-8 px-6 rounded-b-[28px] overflow-hidden items-center justify-center">
-        <Image
-          source={require("../../../assets/images/line-background.png")}
-          className="absolute bottom-0 w-full"
-          resizeMode="cover"
-        />
-        <Text className="text-white font-bold text-lg tracking-wide z-10">
-          Profile
-        </Text>
-      </View>
+      {/* Reusable Curved Header */}
+      <CurvedHeader title="Profile" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -101,6 +93,7 @@ export default function ProfileScreen() {
           {/* Account Info */}
           <TouchableOpacity
             activeOpacity={0.7}
+            onPress={() => router.push("/account" as any)}
             className="bg-white border border-neutral-100 rounded-2xl px-4 h-[60px] flex-row items-center justify-between shadow-sm"
           >
             <View className="flex-row items-center flex-1">
