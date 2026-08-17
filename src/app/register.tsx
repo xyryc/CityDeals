@@ -62,7 +62,7 @@ export default function CreateAccountScreen() {
 
           {/* Heading */}
           <View className="items-center mb-4">
-            <Text className="text-xl font-bold text-neutral-900 tracking-tight">
+            <Text className="text-lg font-bold text-neutral-900 tracking-tight">
               Create Account
             </Text>
             <Text className="text-neutral-500 text-base text-center mt-1 max-w-xs">
@@ -79,7 +79,7 @@ export default function CreateAccountScreen() {
                 Full Name
               </Text>
               <View className="flex-row items-center border border-neutral-200 rounded-xl px-3.5 h-12 bg-white focus:border-orange-500">
-                <Feather name="user" size={16} color="#ea580c" />
+                <Feather name="user" size={18} color="#ea580c" />
                 <TextInput
                   value={fullName}
                   onChangeText={setFullName}
@@ -96,7 +96,7 @@ export default function CreateAccountScreen() {
                 Email Address
               </Text>
               <View className="flex-row items-center border border-neutral-200 rounded-xl px-3.5 h-12 bg-white focus:border-orange-500">
-                <Feather name="mail" size={16} color="#ea580c" />
+                <Feather name="mail" size={18} color="#ea580c" />
                 <TextInput
                   value={email}
                   onChangeText={setEmail}
@@ -115,7 +115,7 @@ export default function CreateAccountScreen() {
                 Phone Number
               </Text>
               <View className="flex-row items-center border border-neutral-200 rounded-xl px-3.5 h-12 bg-white focus:border-orange-500">
-                <Feather name="phone" size={16} color="#ea580c" />
+                <Feather name="phone" size={18} color="#ea580c" />
                 <TextInput
                   value={phone}
                   onChangeText={setPhone}
@@ -133,7 +133,7 @@ export default function CreateAccountScreen() {
                 Password
               </Text>
               <View className="flex-row items-center border border-neutral-200 rounded-xl px-3.5 h-12 bg-white focus:border-orange-500">
-                <Feather name="lock" size={16} color="#ea580c" />
+                <Feather name="lock" size={18} color="#ea580c" />
                 <TextInput
                   value={password}
                   onChangeText={setPassword}
@@ -149,7 +149,7 @@ export default function CreateAccountScreen() {
                 >
                   <Feather
                     name={showPassword ? "eye" : "eye-off"}
-                    size={16}
+                    size={18}
                     color="#9ca3af"
                   />
                 </TouchableOpacity>
@@ -162,7 +162,7 @@ export default function CreateAccountScreen() {
                 Confirm Password
               </Text>
               <View className="flex-row items-center border border-neutral-200 rounded-xl px-3.5 h-12 bg-white focus:border-orange-500">
-                <Feather name="lock" size={16} color="#ea580c" />
+                <Feather name="lock" size={18} color="#ea580c" />
                 <TextInput
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
@@ -178,7 +178,7 @@ export default function CreateAccountScreen() {
                 >
                   <Feather
                     name={showConfirmPassword ? "eye" : "eye-off"}
-                    size={16}
+                    size={18}
                     color="#9ca3af"
                   />
                 </TouchableOpacity>
@@ -216,7 +216,7 @@ export default function CreateAccountScreen() {
               onPress={handleCreateAccount}
               className="w-full bg-orange-500 active:bg-orange-600 h-12 rounded-xl items-center justify-center shadow-md shadow-orange-500/25 mt-1"
             >
-              <Text className="text-white font-semibold text-xl tracking-wide">
+              <Text className="text-white font-bold text-lg tracking-wide">
                 Create Account
               </Text>
             </TouchableOpacity>
@@ -236,7 +236,7 @@ export default function CreateAccountScreen() {
               onPress={handleGoogleSignIn}
               className="w-full bg-neutral-50 border border-neutral-200 h-12 rounded-xl flex-row items-center justify-center active:bg-neutral-100"
             >
-              <Ionicons name="logo-google" size={16} color="#EA4335" />
+              <Ionicons name="logo-google" size={18} color="#EA4335" />
               <Text className="text-neutral-800 font-semibold text-base ml-2.5">
                 Continue with Google
               </Text>

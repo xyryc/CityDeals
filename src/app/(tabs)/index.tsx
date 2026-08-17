@@ -43,7 +43,7 @@ export default function HomeScreen() {
                 Featured Deal
               </Text>
             </View>
-            <Text className="text-white text-2xl font-black leading-tight">
+            <Text className="text-white text-xl font-black leading-tight">
               Save Up To 50% Today!
             </Text>
             <Text className="text-orange-100 text-base mt-2 leading-5">
@@ -67,7 +67,7 @@ export default function HomeScreen() {
 
         {/* Popular Categories */}
         <View className="flex-row items-center justify-between mb-4">
-          <Text className="text-neutral-900 font-bold text-xl">
+          <Text className="text-neutral-900 font-bold text-lg">
             Categories
           </Text>
           <Text className="text-orange-600 font-bold text-base">See All</Text>

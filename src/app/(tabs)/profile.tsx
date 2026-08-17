@@ -24,7 +24,7 @@ export default function ProfileScreen() {
           className="absolute bottom-0 w-full"
           resizeMode="cover"
         />
-        <Text className="text-white font-bold text-2xl tracking-wide z-10">
+        <Text className="text-white font-bold text-lg tracking-wide z-10">
           Profile
         </Text>
       </View>
@@ -47,8 +47,8 @@ export default function ProfileScreen() {
               <Text className="text-neutral-500 text-base font-normal">
                 Welcome back,
               </Text>
-              <Text className="text-neutral-900 font-bold text-xl mt-0.5">
-                Mohammad Anik
+              <Text className="text-neutral-900 font-bold text-lg mt-0.5">
+                Nasimul Noyon
               </Text>
             </View>
           </View>
@@ -58,7 +58,7 @@ export default function ProfileScreen() {
             {/* Stat 1: Save coupons */}
             <View className="flex-1 bg-neutral-50/70 border border-neutral-100/90 rounded-2xl p-4 mr-2">
               <View className="flex-row items-center justify-between">
-                <Text className="text-3xl font-black text-[#0f3455]">12</Text>
+                <Text className="text-2xl font-black text-[#0f3455]">12</Text>
                 <View className="w-10 h-10 rounded-full bg-orange-50 items-center justify-center">
                   <MaterialCommunityIcons
                     name="ticket-percent-outline"
@@ -75,7 +75,7 @@ export default function ProfileScreen() {
             {/* Stat 2: Coupon redeemed */}
             <View className="flex-1 bg-neutral-50/70 border border-neutral-100/90 rounded-2xl p-4 ml-2">
               <View className="flex-row items-center justify-between">
-                <Text className="text-3xl font-black text-[#0f3455]">06</Text>
+                <Text className="text-2xl font-black text-[#0f3455]">06</Text>
                 <View className="w-10 h-10 rounded-full bg-orange-50 items-center justify-center">
                   <Ionicons
                     name="checkmark-circle-outline"
@@ -92,7 +92,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* General Section */}
-        <Text className="text-neutral-900 font-bold text-xl px-5 mt-6 mb-3">
+        <Text className="text-neutral-900 font-bold text-lg px-5 mt-6 mb-3">
           General
         </Text>
 

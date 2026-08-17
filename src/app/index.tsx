@@ -138,11 +138,11 @@ export default function OnboardingScreen() {
                 </Text>
               </View>
 
-              <Text className="text-3xl font-extrabold text-neutral-900 text-center tracking-tight leading-tight">
+              <Text className="text-2xl font-extrabold text-neutral-900 text-center tracking-tight leading-tight">
                 {item.title}
               </Text>
 
-              <Text className="text-neutral-600 text-center text-lg leading-7 mt-4 font-normal">
+              <Text className="text-neutral-600 text-center text-base leading-6 mt-3 font-normal">
                 {item.description}
               </Text>
             </View>
@@ -180,7 +180,7 @@ export default function OnboardingScreen() {
           onPress={handleNext}
           className="w-full bg-orange-500 active:bg-orange-600 py-4 rounded-2xl items-center justify-center shadow-lg shadow-orange-500/25"
         >
-          <Text className="text-white font-bold text-xl tracking-wide">
+          <Text className="text-white font-bold text-lg tracking-wide">
             {isLastSlide ? "Get Started" : "Next"}
           </Text>
         </TouchableOpacity>

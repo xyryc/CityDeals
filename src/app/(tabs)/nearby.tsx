@@ -13,7 +13,7 @@ export default function NearbyScreen() {
         contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 14, paddingBottom: 110 }}
       >
         <View className="flex-row items-center justify-between mb-5">
-          <Text className="text-3xl font-extrabold text-neutral-900">
+          <Text className="text-lg font-bold text-neutral-900">
             Nearby Deals
           </Text>
           <View className="flex-row items-center bg-orange-50 px-3.5 py-2 rounded-full border border-orange-100">
@@ -30,7 +30,7 @@ export default function NearbyScreen() {
             className="w-52 h-52 mb-4"
             resizeMode="contain"
           />
-          <Text className="text-xl font-bold text-neutral-900 text-center">
+          <Text className="text-lg font-bold text-neutral-900 text-center">
             Discover Great Places Around You
           </Text>
           <Text className="text-neutral-600 text-base text-center mt-2.5 leading-6 max-w-sm">
