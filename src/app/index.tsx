@@ -85,10 +85,10 @@ export default function OnboardingScreen() {
       <StatusBar style="dark" />
 
       {/* Top Header with CityDeals logo / Skip Button */}
-      <View className="flex-row justify-between items-center px-6 pt-2 h-14">
+      <View className="flex-row justify-between items-center px-6 pt-2 h-16">
         <Image
           source={require("../../assets/images/city-deals-logo.png")}
-          className="h-8 w-32"
+          className="h-10 w-36"
           resizeMode="contain"
         />
 
@@ -96,9 +96,9 @@ export default function OnboardingScreen() {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={handleSkip}
-            className="px-3.5 py-1.5 rounded-full bg-neutral-100/90 active:bg-neutral-200"
+            className="px-4 py-2 rounded-full bg-neutral-100/90 active:bg-neutral-200"
           >
-            <Text className="text-neutral-600 font-semibold text-sm">Skip</Text>
+            <Text className="text-neutral-700 font-bold text-base">Skip</Text>
           </TouchableOpacity>
         ) : (
           <View className="w-12" />
@@ -131,9 +131,9 @@ export default function OnboardingScreen() {
             </View>
 
             {/* Content Details */}
-            <View className="items-center mt-6 max-w-sm px-2">
-              <View className="bg-orange-50 border border-orange-200/60 px-3.5 py-1 rounded-full mb-3">
-                <Text className="text-orange-600 text-xs font-bold uppercase tracking-wider">
+            <View className="items-center mt-6 max-w-md px-2">
+              <View className="bg-orange-50 border border-orange-200/60 px-4 py-1.5 rounded-full mb-3.5">
+                <Text className="text-orange-600 text-base font-bold uppercase tracking-wider">
                   {item.badge}
                 </Text>
               </View>
@@ -142,7 +142,7 @@ export default function OnboardingScreen() {
                 {item.title}
               </Text>
 
-              <Text className="text-neutral-500 text-center text-base leading-6 mt-3.5 font-normal">
+              <Text className="text-neutral-600 text-center text-lg leading-7 mt-4 font-normal">
                 {item.description}
               </Text>
             </View>
@@ -180,7 +180,7 @@ export default function OnboardingScreen() {
           onPress={handleNext}
           className="w-full bg-orange-500 active:bg-orange-600 py-4 rounded-2xl items-center justify-center shadow-lg shadow-orange-500/25"
         >
-          <Text className="text-white font-bold text-lg tracking-wide">
+          <Text className="text-white font-bold text-xl tracking-wide">
             {isLastSlide ? "Get Started" : "Next"}
           </Text>
         </TouchableOpacity>

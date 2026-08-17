@@ -23,7 +23,7 @@ export default function LoginScreen() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = () => {
-    alert(`Logged in successfully with ${email || "account"}!`);
+    router.replace("/(tabs)" as any);
   };
 
   const handleGoogleSignIn = () => {

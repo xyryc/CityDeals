@@ -32,7 +32,7 @@ export default function CreateAccountScreen() {
       alert("Please agree to the Terms & Conditions to proceed.");
       return;
     }
-    alert(`Account created successfully for ${fullName || "user"}!`);
+    router.replace("/(tabs)" as any);
   };
 
   const handleGoogleSignIn = () => {
