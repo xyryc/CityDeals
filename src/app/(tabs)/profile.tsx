@@ -8,7 +8,7 @@ import CurvedHeader from "../_components/CurvedHeader";
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const [pauseNotification, setPauseNotification] = useState(true);
+  const [pushNotification, setPushNotification] = useState(true);
 
   const handleLogout = () => {
     router.replace("/login" as any);
@@ -108,6 +108,7 @@ export default function ProfileScreen() {
           {/* Change password */}
           <TouchableOpacity
             activeOpacity={0.7}
+            onPress={() => router.push("/change-password" as any)}
             className="bg-white border border-neutral-100 rounded-2xl px-4 h-[60px] flex-row items-center justify-between shadow-sm"
           >
             <View className="flex-row items-center flex-1">
@@ -119,19 +120,19 @@ export default function ProfileScreen() {
             <Feather name="chevron-right" size={20} color="#9ca3af" />
           </TouchableOpacity>
 
-          {/* Pause notification */}
+          {/* Push notification */}
           <View className="bg-white border border-neutral-100 rounded-2xl px-4 h-[60px] flex-row items-center justify-between shadow-sm">
             <View className="flex-row items-center flex-1">
               <Feather name="bell" size={20} color="#ea580c" />
               <Text className="text-neutral-800 font-semibold text-lg ml-3.5">
-                Pause notification
+                Push notification
               </Text>
             </View>
             <View style={{ transform: [{ scale: 0.85 }], marginRight: -4 }}>
               <Host matchContents>
                 <Switch
-                  value={pauseNotification}
-                  onValueChange={setPauseNotification}
+                  value={pushNotification}
+                  onValueChange={setPushNotification}
                 />
               </Host>
             </View>
