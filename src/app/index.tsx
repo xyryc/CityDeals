@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import { useRouter } from "expo-router";
 
 interface OnboardingSlide {
   id: string;
@@ -50,6 +51,7 @@ const ONBOARDING_DATA: OnboardingSlide[] = [
 
 export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList<OnboardingSlide>>(null);
 
@@ -68,16 +70,12 @@ export default function OnboardingScreen() {
         animated: true,
       });
     } else {
-      // Completed onboarding
-      alert("Welcome to CityDeals! Explore deals around you.");
+      router.push("/register" as any);
     }
   };
 
   const handleSkip = () => {
-    flatListRef.current?.scrollToIndex({
-      index: ONBOARDING_DATA.length - 1,
-      animated: true,
-    });
+    router.push("/register" as any);
   };
 
   const isLastSlide = currentIndex === ONBOARDING_DATA.length - 1;
@@ -86,19 +84,19 @@ export default function OnboardingScreen() {
     <SafeAreaView className="flex-1 bg-neutral-50 justify-between">
       <StatusBar style="dark" />
 
-      {/* Top Header / Skip Button */}
-      <View className="flex-row justify-between items-center px-6 pt-3 h-12">
-        <View className="flex-row items-center">
-          <Text className="text-xl font-black text-orange-500 tracking-wider">
-            City<Text className="text-neutral-900">Deals</Text>
-          </Text>
-        </View>
+      {/* Top Header with CityDeals logo / Skip Button */}
+      <View className="flex-row justify-between items-center px-6 pt-2 h-14">
+        <Image
+          source={require("../../assets/images/city-deals-logo.png")}
+          className="h-8 w-32"
+          resizeMode="contain"
+        />
 
         {!isLastSlide ? (
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={handleSkip}
-            className="px-3 py-1.5 rounded-full bg-neutral-100/80 active:bg-neutral-200"
+            className="px-3.5 py-1.5 rounded-full bg-neutral-100/90 active:bg-neutral-200"
           >
             <Text className="text-neutral-600 font-semibold text-sm">Skip</Text>
           </TouchableOpacity>
