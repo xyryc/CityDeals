@@ -42,7 +42,7 @@ export default function HomeScreen() {
 
   const handleOpenDeal = (deal: DealItem) => {
     router.push({
-      pathname: "/coupon-details",
+      pathname: "/screens/coupon-details" as any,
       params: {
         id: deal.id,
         dealHeading: deal.dealHeading,

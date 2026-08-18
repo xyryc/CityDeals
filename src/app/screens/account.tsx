@@ -11,8 +11,8 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Feather } from "@expo/vector-icons";
-import CurvedHeader from "../components/CurvedHeader";
-import PrimaryButton from "../components/PrimaryButton";
+import CurvedHeader from "../../components/CurvedHeader";
+import PrimaryButton from "../../components/PrimaryButton";
 
 export default function AccountSettingScreen() {
   const [fullName, setFullName] = useState("");

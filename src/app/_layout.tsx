@@ -11,14 +11,14 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen
-          name="coupon-details"
+          name="screens/coupon-details"
           options={{
             presentation: "card",
             animation: "slide_from_right",
           }}
         />
-        <Stack.Screen name="account" />
-        <Stack.Screen name="change-password" />
+        <Stack.Screen name="screens/account" />
+        <Stack.Screen name="screens/change-password" />
       </Stack>
     </AppProviders>
   );

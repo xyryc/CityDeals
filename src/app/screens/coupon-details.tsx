@@ -39,7 +39,7 @@ export default function CouponDetailsScreen() {
         {/* Background texture clipped separately to the rounded shape */}
         <View style={styles.headerBgClip}>
           <Image
-            source={require("../../assets/images/line-background.png")}
+            source={require("../../../assets/images/line-background.png")}
             style={StyleSheet.absoluteFill}
             resizeMode="cover"
           />
@@ -72,7 +72,7 @@ export default function CouponDetailsScreen() {
         <View className="px-4 pt-4">
           <View className="rounded-3xl overflow-hidden border border-neutral-200">
             <Image
-              source={require("../../assets/images/placeholder-deal.jpg")}
+              source={require("../../../assets/images/placeholder-deal.jpg")}
               style={styles.posterImage}
               resizeMode="cover"
             />

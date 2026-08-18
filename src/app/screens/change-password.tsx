@@ -11,8 +11,8 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import CurvedHeader from "../components/CurvedHeader";
-import PrimaryButton from "../components/PrimaryButton";
+import CurvedHeader from "../../components/CurvedHeader";
+import PrimaryButton from "../../components/PrimaryButton";
 
 export default function ChangePasswordScreen() {
   const [currentPassword, setCurrentPassword] = useState("");

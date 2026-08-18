@@ -98,7 +98,7 @@ export default function ProfileScreen() {
             {/* Account Info */}
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => router.push("/account" as any)}
+              onPress={() => router.push("/screens/account" as any)}
               className="bg-white border border-neutral-100 rounded-2xl px-4 h-[60px] flex-row items-center justify-between shadow-sm"
             >
               <View className="flex-row items-center flex-1">
@@ -113,7 +113,7 @@ export default function ProfileScreen() {
             {/* Change password */}
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => router.push("/change-password" as any)}
+              onPress={() => router.push("/screens/change-password" as any)}
               className="bg-white border border-neutral-100 rounded-2xl px-4 h-[60px] flex-row items-center justify-between shadow-sm"
             >
               <View className="flex-row items-center flex-1">
