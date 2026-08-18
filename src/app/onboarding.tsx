@@ -8,46 +8,12 @@ import {
   useWindowDimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  ImageSourcePropType,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
-
-interface OnboardingSlide {
-  id: string;
-  badge: string;
-  title: string;
-  description: string;
-  image: ImageSourcePropType;
-}
-
-const ONBOARDING_DATA: OnboardingSlide[] = [
-  {
-    id: "1",
-    badge: "Special Discounts",
-    title: "Save More on\nWhat You Love",
-    description:
-      "Discover Amazing local deals, exclusive coupons, and special offers near you",
-    image: require("../../assets/images/coupons-1.png"),
-  },
-  {
-    id: "2",
-    badge: "Nearby Locations",
-    title: "Find Great Deals\nNear You",
-    description:
-      "Browse nearby coupon locations, restaurants, and special offers around your area in seconds.",
-    image: require("../../assets/images/coupons-2.png"),
-  },
-  {
-    id: "3",
-    badge: "Instant Checkout",
-    title: "Ready to Save\nEvery Day",
-    description:
-      "Save your favorite coupons. Show them at checkout and enjoy local saving anytime.",
-    image: require("../../assets/images/coupons-3.png"),
-  },
-];
+import PrimaryButton from "../components/PrimaryButton";
+import { ONBOARDING_DATA, OnboardingSlide } from "../config/constants";
 
 export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
@@ -174,15 +140,10 @@ export default function OnboardingScreen() {
         </View>
 
         {/* Primary CTA Button */}
-        <TouchableOpacity
-          activeOpacity={0.85}
+        <PrimaryButton
+          title={isLastSlide ? "Get Started" : "Next"}
           onPress={handleNext}
-          className="w-full bg-orange-500 active:bg-orange-600 py-4 rounded-2xl items-center justify-center shadow-lg shadow-orange-500/25"
-        >
-          <Text className="text-white font-bold text-lg tracking-wide">
-            {isLastSlide ? "Get Started" : "Next"}
-          </Text>
-        </TouchableOpacity>
+        />
       </View>
     </SafeAreaView>
   );

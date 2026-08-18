@@ -4,8 +4,8 @@ import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import CurvedHeader from "../_components/CurvedHeader";
-import LanguageBottomSheet from "../_components/LanguageBottomSheet";
+import CurvedHeader from "../../components/CurvedHeader";
+import LanguageBottomSheet from "../../components/LanguageBottomSheet";
 
 export default function ProfileScreen() {
   const [pushNotification, setPushNotification] = useState(true);
@@ -28,7 +28,7 @@ export default function ProfileScreen() {
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 160 }}
+          contentContainerStyle={{ paddingBottom: 110 }}
         >
           {/* User Card */}
           <View className="bg-white rounded-3xl p-5 mx-4 mt-4 shadow-sm border border-neutral-100">

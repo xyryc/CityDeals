@@ -10,30 +10,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-
-interface LanguageOption {
-  id: string;
-  name: string;
-  nativeName: string;
-}
-
-const LANGUAGES: LanguageOption[] = [
-  {
-    id: "en",
-    name: "English",
-    nativeName: "English (US)",
-  },
-  {
-    id: "es",
-    name: "Spanish",
-    nativeName: "Español",
-  },
-  {
-    id: "pt",
-    name: "Portuguese",
-    nativeName: "Português",
-  },
-];
+import PrimaryButton from "../components/PrimaryButton";
+import { LANGUAGES } from "../config/constants";
 
 export default function LanguageSelectionScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
@@ -147,15 +125,10 @@ export default function LanguageSelectionScreen() {
 
         {/* Action CTA Button */}
         <View className="pt-6">
-          <TouchableOpacity
-            activeOpacity={0.85}
+          <PrimaryButton
+            title="Continue"
             onPress={handleContinue}
-            className="w-full bg-orange-500 active:bg-orange-600 py-4 rounded-2xl items-center justify-center shadow-lg shadow-orange-500/25"
-          >
-            <Text className="text-white font-bold text-lg tracking-wide">
-              Continue
-            </Text>
-          </TouchableOpacity>
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

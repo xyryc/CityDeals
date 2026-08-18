@@ -11,10 +11,10 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import CurvedHeader from "./_components/CurvedHeader";
+import CurvedHeader from "../components/CurvedHeader";
+import PrimaryButton from "../components/PrimaryButton";
 
 export default function ChangePasswordScreen() {
-
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -212,15 +212,12 @@ export default function ChangePasswordScreen() {
           </View>
 
           {/* Change Password CTA Button */}
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={handleChangePassword}
-            className="bg-orange-500 active:bg-orange-600 py-4 rounded-2xl items-center justify-center shadow-lg shadow-orange-500/25 mx-4 mt-8"
-          >
-            <Text className="text-white font-bold text-lg tracking-wide">
-              Save Password
-            </Text>
-          </TouchableOpacity>
+          <View className="px-4 mt-8">
+            <PrimaryButton
+              title="Save Password"
+              onPress={handleChangePassword}
+            />
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </View>

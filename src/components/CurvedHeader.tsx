@@ -12,11 +12,10 @@ export default function CurvedHeader({
   title,
   showBackButton = false,
 }: CurvedHeaderProps) {
-
   return (
     <View className="relative bg-[#0f3b5e] pt-14 pb-8 px-6 rounded-b-[28px] overflow-hidden">
       <Image
-        source={require("../../../assets/images/line-background.png")}
+        source={require("../../assets/images/line-background.png")}
         className="absolute bottom-0 w-full"
         resizeMode="cover"
       />

@@ -13,9 +13,9 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PrimaryButton from "../../components/PrimaryButton";
 
-export default function CreateAccountScreen() {
-
+export default function RegisterScreen() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -210,15 +210,11 @@ export default function CreateAccountScreen() {
             </TouchableOpacity>
 
             {/* Create Account CTA */}
-            <TouchableOpacity
-              activeOpacity={0.85}
+            <PrimaryButton
+              title="Create Account"
               onPress={handleCreateAccount}
-              className="w-full bg-orange-500 active:bg-orange-600 h-12 rounded-xl items-center justify-center shadow-md shadow-orange-500/25 mt-1"
-            >
-              <Text className="text-white font-bold text-lg tracking-wide">
-                Create Account
-              </Text>
-            </TouchableOpacity>
+              className="mt-1"
+            />
 
             {/* Divider */}
             <View className="flex-row items-center my-1">

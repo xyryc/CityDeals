@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function NearbyScreen() {
   return (
@@ -19,7 +19,7 @@ export default function NearbyScreen() {
           <View className="flex-row items-center bg-orange-50 px-3.5 py-2 rounded-full border border-orange-100">
             <Ionicons name="location-outline" size={18} color="#ea580c" />
             <Text className="text-orange-600 font-bold text-base ml-1.5">
-              Dhaka, BD
+              Sylhet, BD
             </Text>
           </View>
         </View>
