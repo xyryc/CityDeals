@@ -170,6 +170,7 @@ export default function ProfileScreen() {
             {/* Help & Support */}
             <TouchableOpacity
               activeOpacity={0.7}
+              onPress={() => router.push("/screens/help-support" as any)}
               className="bg-white border border-neutral-100 rounded-2xl px-4 h-[60px] flex-row items-center justify-between shadow-sm"
             >
               <View className="flex-row items-center flex-1">
