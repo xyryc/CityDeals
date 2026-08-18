@@ -1,6 +1,6 @@
 import { Host, Switch } from "@expo/ui";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -8,7 +8,6 @@ import CurvedHeader from "../_components/CurvedHeader";
 import LanguageBottomSheet from "../_components/LanguageBottomSheet";
 
 export default function ProfileScreen() {
-  const router = useRouter();
   const [pushNotification, setPushNotification] = useState(true);
 
   // Language state & bottom sheet visibility
@@ -29,7 +28,7 @@ export default function ProfileScreen() {
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 110 }}
+          contentContainerStyle={{ paddingBottom: 160 }}
         >
           {/* User Card */}
           <View className="bg-white rounded-3xl p-5 mx-4 mt-4 shadow-sm border border-neutral-100">

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 
 interface CurvedHeaderProps {
   title: string;
@@ -12,7 +12,6 @@ export default function CurvedHeader({
   title,
   showBackButton = false,
 }: CurvedHeaderProps) {
-  const router = useRouter();
 
   return (
     <View className="relative bg-[#0f3b5e] pt-14 pb-8 px-6 rounded-b-[28px] overflow-hidden">

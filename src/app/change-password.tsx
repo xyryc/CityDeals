@@ -10,11 +10,10 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import CurvedHeader from "./_components/CurvedHeader";
 
 export default function ChangePasswordScreen() {
-  const router = useRouter();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
