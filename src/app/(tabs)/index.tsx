@@ -1,4 +1,5 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useMemo, useState } from "react";
 import {
@@ -40,7 +41,15 @@ export default function HomeScreen() {
   }, [selectedCategory, searchQuery]);
 
   const handleOpenDeal = (deal: DealItem) => {
-    alert(`Opening deal: ${deal.dealHeading}`);
+    router.push({
+      pathname: "/coupon-details",
+      params: {
+        id: deal.id,
+        dealHeading: deal.dealHeading,
+        dealDescription: deal.dealDescription,
+        category: deal.category ?? "",
+      },
+    });
   };
 
   const handleClearFilters = () => {
