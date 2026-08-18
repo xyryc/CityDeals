@@ -79,7 +79,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="saved"
         options={{
-          title: "Save",
+          title: "Saved",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "heart" : "heart-outline"}
