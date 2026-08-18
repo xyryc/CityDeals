@@ -28,7 +28,7 @@ export default function ProfileScreen() {
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 110 }}
+          contentContainerStyle={{ paddingBottom: 160 }}
         >
           {/* User Card */}
           <View className="bg-white rounded-3xl p-5 mx-4 mt-4 shadow-sm border border-neutral-100">

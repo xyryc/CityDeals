@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, ImageSourcePropType } from "react-native";
+import {
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import PrimaryButton from "./PrimaryButton";
 
 export interface DealItem {
   id: string;
-  storeName: string;
-  storeLogo?: ImageSourcePropType | string;
-  foodImage: string;
-  offerBanner?: string;
-  offerTitle: string;
-  offerSubtitle: string;
+  category?: string;
+  image?: ImageSourcePropType | string;
   dealHeading: string;
   dealDescription: string;
   isFavorite?: boolean;
@@ -35,75 +38,117 @@ export default function DealCard({
     onToggleFavorite?.({ ...deal, isFavorite: newState });
   };
 
+  const imageSource =
+    typeof deal.image === "string"
+      ? { uri: deal.image }
+      : deal.image || require("../../assets/images/placeholder-deal.jpg");
+
   return (
-    <View className="bg-white rounded-3xl p-3.5 mb-5 shadow-sm border border-neutral-100">
-      {/* Banner / Media Container */}
-      <View className="relative rounded-2xl overflow-hidden bg-[#0a0f1d]">
-        {/* Top Store Header & Favorite Button */}
-        <View className="flex-row items-center justify-between px-3.5 pt-3 pb-2 z-10">
-          {/* Store Logo / Badge */}
-          <View className="flex-row items-center">
-            <View className="w-8 h-8 rounded-full bg-red-600/90 items-center justify-center mr-2 shadow-sm">
-              <Ionicons name="flame" size={18} color="#ffffff" />
-            </View>
-            <View>
-              <Text className="text-white font-bold text-base tracking-wide">
-                {deal.storeName}
-              </Text>
-              <Text className="text-amber-400 text-base font-medium -mt-0.5">
-                Fresh Mex Fusion
-              </Text>
-            </View>
-          </View>
+    <View style={styles.card}>
+      {/* Banner */}
+      <View style={styles.bannerContainer}>
+        {/* Favorite Heart */}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={handleFavoriteToggle}
+          style={styles.heartButton}
+        >
+          <Ionicons
+            name={favorite ? "heart" : "heart-outline"}
+            size={20}
+            color={favorite ? "#ef4444" : "#1e293b"}
+          />
+        </TouchableOpacity>
 
-          {/* Floating Favorite Heart Button */}
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={handleFavoriteToggle}
-            className="w-11 h-11 rounded-2xl bg-white items-center justify-center shadow-md"
-          >
-            <Ionicons
-              name={favorite ? "heart" : "heart-outline"}
-              size={22}
-              color={favorite ? "#ef4444" : "#1e293b"}
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* Product / Dish Image */}
-        <Image
-          source={{ uri: deal.foodImage }}
-          className="w-full h-44"
-          resizeMode="cover"
-        />
-
-        {/* Offer Typography Banner */}
-        <View className="bg-[#111625] px-5 py-4 items-center justify-center border-t border-amber-500/20">
-          <Text className="text-amber-400 font-serif font-black text-3xl text-center leading-tight tracking-wide">
-            {deal.offerTitle}
-          </Text>
-          <Text className="text-amber-200/90 font-serif italic text-lg text-center mt-0.5">
-            {deal.offerSubtitle}
-          </Text>
-        </View>
+        {/* Poster Image */}
+        <Image source={imageSource} style={styles.posterImage} resizeMode="cover" />
       </View>
 
-      {/* Card Info Details */}
-      <View className="px-1 pt-3">
-        <Text className="text-neutral-900 font-bold text-lg">
-          {deal.dealHeading}
-        </Text>
-        <Text className="text-neutral-500 text-base mt-0.5 font-normal">
-          {deal.dealDescription}
-        </Text>
+      {/* Card Info */}
+      <View style={styles.cardInfo}>
+        <Text style={styles.dealHeading}>{deal.dealHeading}</Text>
+        <Text style={styles.dealDescription}>{deal.dealDescription}</Text>
       </View>
 
-      {/* Action CTA Button using PrimaryButton */}
-      <PrimaryButton
-        title="Open"
+      {/* CTA Button */}
+      <Pressable
         onPress={() => onPressOpen?.(deal)}
-        className="mt-3.5"
-      />
+        style={styles.openButton}
+      >
+        <Text style={styles.openButtonText}>Open</Text>
+      </Pressable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "#ffffff",
+    borderRadius: 26,
+    padding: 16,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#f3f4f6",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  bannerContainer: {
+    borderRadius: 16,
+    overflow: "hidden",
+    backgroundColor: "#f3f4f6",
+    position: "relative",
+  },
+  heartButton: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    width: 40,
+    height: 40,
+    borderRadius: 14,
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  posterImage: {
+    width: "100%",
+    height: 320,
+  },
+  cardInfo: {
+    paddingTop: 14,
+    paddingBottom: 4,
+    paddingHorizontal: 4,
+  },
+  dealHeading: {
+    color: "#111827",
+    fontWeight: "700",
+    fontSize: 18,
+  },
+  dealDescription: {
+    color: "#6b7280",
+    fontSize: 15,
+    marginTop: 2,
+    fontWeight: "400",
+  },
+  openButton: {
+    backgroundColor: "#ea580c",
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 14,
+  },
+  openButtonText: {
+    color: "#ffffff",
+    fontWeight: "700",
+    fontSize: 16,
+  },
+});

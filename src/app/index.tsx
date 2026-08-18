@@ -72,7 +72,7 @@ export default function LanguageSelectionScreen() {
                   key={lang.id}
                   activeOpacity={0.8}
                   onPress={() => setSelectedLanguage(lang.id)}
-                  className={`flex-row items-center justify-between px-5 h-16 rounded-2xl border transition-all ${
+                  className={`flex-row items-center justify-between px-5 h-16 rounded-2xl border ${
                     isSelected
                       ? "bg-orange-50/80 border-orange-500 shadow-sm shadow-orange-500/10"
                       : "bg-neutral-50/80 border-neutral-200"

@@ -1,6 +1,5 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -14,19 +13,6 @@ export default function TabLayout() {
         tabBarActiveTintColor: "#ea580c",
         tabBarInactiveTintColor: "#94a3b8",
         tabBarLabelPosition: "below-icon",
-        tabBarButton: (props) => {
-          const { ref, ...rest } = props as any;
-          return (
-            <Pressable
-              {...rest}
-              android_ripple={null}
-              style={({ pressed }) => [
-                props.style,
-                { opacity: pressed ? 0.7 : 1 },
-              ]}
-            />
-          );
-        },
         tabBarStyle: {
           backgroundColor: "#ffffff",
           borderTopColor: "#f1f5f9",

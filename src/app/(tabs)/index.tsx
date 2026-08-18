@@ -1,148 +1,310 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
+import { useMemo, useState } from "react";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import DealCard, { DealItem } from "../../components/DealCard";
+import EmptyDealsState from "../../components/EmptyDealsState";
 import { CATEGORIES, MOCK_DEALS } from "../../config/constants";
 
 export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredDeals = useMemo(() => {
+    let list = MOCK_DEALS;
+
+    if (selectedCategory !== "All") {
+      list = list.filter((d) => d.category === selectedCategory);
+    }
+
+    if (searchQuery.trim().length > 0) {
+      const q = searchQuery.toLowerCase().trim();
+      list = list.filter(
+        (deal) =>
+          deal.dealHeading.toLowerCase().includes(q) ||
+          deal.dealDescription.toLowerCase().includes(q) ||
+          (deal.category && deal.category.toLowerCase().includes(q))
+      );
+    }
+
+    return list;
+  }, [selectedCategory, searchQuery]);
 
   const handleOpenDeal = (deal: DealItem) => {
-    alert(`Opening deal: ${deal.offerTitle} at ${deal.storeName}`);
+    alert(`Opening deal: ${deal.dealHeading}`);
+  };
+
+  const handleClearFilters = () => {
+    setSearchQuery("");
+    setSelectedCategory("All");
   };
 
   return (
-    <View className="flex-1 bg-neutral-50">
+    <View style={styles.container}>
       <StatusBar style="light" />
 
-      {/* Deep Navy Top Header with Starry Backdrop */}
-      <View className="relative bg-[#0f3b5e] pt-12 pb-5 px-5 rounded-b-[28px] overflow-hidden">
+      {/* Deep Navy Top Header */}
+      <View style={styles.header}>
         <Image
           source={require("../../../assets/images/line-background.png")}
-          className="absolute bottom-0 w-full"
+          style={StyleSheet.absoluteFill}
           resizeMode="cover"
         />
 
-        {/* Top Header Row: User Location & Action Buttons */}
-        <View className="flex-row items-center justify-between z-10">
-          {/* User Avatar + Location Info */}
-          <View className="flex-row items-center flex-1 mr-3">
+        {/* Header Row */}
+        <View style={styles.headerRow}>
+          <View style={styles.locationRow}>
             <Image
               source={{
                 uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
               }}
-              className="w-11 h-11 rounded-full bg-neutral-200 border border-orange-200"
+              style={styles.avatar}
             />
-            <View className="ml-3 flex-1">
-              <Text className="text-slate-300 text-base font-normal">
-                My Location
-              </Text>
-              <View className="flex-row items-center mt-0.5">
+            <View style={styles.locationText}>
+              <Text style={styles.locationLabel}>My Location</Text>
+              <View style={styles.locationValueRow}>
                 <Ionicons name="location-sharp" size={16} color="#ffffff" />
-                <Text
-                  numberOfLines={1}
-                  className="text-white text-base font-bold ml-1 flex-1"
-                >
-                  23/B Kumapara, Sylhet
+                <Text style={styles.locationValue} numberOfLines={1}>
+                  4/A 28013 Madrid, Spain
                 </Text>
               </View>
             </View>
           </View>
-
-          {/* Action Buttons: Search & Bell */}
-          <View className="flex-row items-center gap-2">
-            <TouchableOpacity
-              activeOpacity={0.8}
-              className="w-11 h-11 rounded-2xl bg-white items-center justify-center shadow-sm"
-            >
-              <Feather name="search" size={20} color="#1e293b" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.8}
-              className="w-11 h-11 rounded-2xl bg-white items-center justify-center shadow-sm"
-            >
-              <Feather name="bell" size={20} color="#1e293b" />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity activeOpacity={0.8} style={styles.bellButton}>
+            <Feather name="bell" size={20} color="#1e293b" />
+          </TouchableOpacity>
         </View>
 
-        {/* Location Dropdown Filter Pill */}
-        <TouchableOpacity
-          activeOpacity={0.85}
-          className="bg-white rounded-2xl px-4 h-13 py-3.5 flex-row items-center justify-between mt-4 z-10 shadow-sm"
-        >
-          <View className="flex-row items-center">
-            <Ionicons name="location-outline" size={20} color="#ea580c" />
-            <Text className="text-neutral-700 font-semibold text-base ml-2.5">
-              23/B Kumapara, Sylhet
-            </Text>
-          </View>
-          <Feather name="chevron-down" size={20} color="#64748b" />
-        </TouchableOpacity>
+        {/* Search Bar */}
+        <View style={styles.searchBar}>
+          <Feather name="search" size={20} color="#ea580c" />
+          <TextInput
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search deals, stores, food..."
+            placeholderTextColor="#9ca3af"
+            returnKeyType="search"
+            style={styles.searchInput}
+          />
+          {searchQuery.trim().length > 0 && (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => setSearchQuery("")}
+              style={styles.clearButton}
+            >
+              <Feather name="x" size={16} color="#64748b" />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
-      {/* Main Content ScrollView */}
+      {/* Scrollable Content */}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: 16, paddingBottom: 110 }}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.scrollContent}
       >
-        {/* Browse Categories Section */}
-        <View className="mb-4">
-          <Text className="text-neutral-900 font-bold text-lg px-5 mb-3">
-            Browse Categories
-          </Text>
-
-          {/* Horizontal Scrollable Category Chips */}
+        {/* Browse Categories */}
+        <View style={styles.categoriesSection}>
+          <Text style={styles.sectionTitle}>Browse Categories</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 20, gap: 10 }}
+            contentContainerStyle={styles.categoryScroll}
           >
             {CATEGORIES.map((category) => {
               const isSelected = selectedCategory === category;
               return (
-                <TouchableOpacity
+                <Pressable
                   key={category}
-                  activeOpacity={0.8}
                   onPress={() => setSelectedCategory(category)}
-                  className={`px-5 py-2.5 rounded-full border transition-all ${
+                  style={[
+                    styles.categoryChip,
                     isSelected
-                      ? "bg-orange-500 border-orange-500 shadow-sm shadow-orange-500/25"
-                      : "bg-slate-100/90 border-slate-200/60"
-                  }`}
+                      ? styles.categoryChipSelected
+                      : styles.categoryChipDefault,
+                  ]}
                 >
                   <Text
-                    className={`font-semibold text-base ${
-                      isSelected ? "text-white" : "text-neutral-700"
-                    }`}
+                    style={[
+                      styles.categoryChipText,
+                      isSelected
+                        ? styles.categoryChipTextSelected
+                        : styles.categoryChipTextDefault,
+                    ]}
                   >
                     {category}
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               );
             })}
           </ScrollView>
         </View>
 
         {/* Deals Feed */}
-        <View className="px-4">
-          {MOCK_DEALS.map((deal) => (
-            <DealCard
-              key={deal.id}
-              deal={deal}
-              onPressOpen={handleOpenDeal}
+        <View style={styles.feedContainer}>
+          {filteredDeals.length > 0 ? (
+            filteredDeals.map((deal) => (
+              <DealCard
+                key={deal.id}
+                deal={deal}
+                onPressOpen={handleOpenDeal}
+              />
+            ))
+          ) : (
+            <EmptyDealsState
+              query={searchQuery}
+              onClearFilters={handleClearFilters}
             />
-          ))}
+          )}
         </View>
       </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f9fafb",
+  },
+  header: {
+    backgroundColor: "#0f3b5e",
+    paddingTop: 48,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
+    overflow: "hidden",
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    zIndex: 10,
+  },
+  locationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    marginRight: 12,
+  },
+  avatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#e5e7eb",
+    borderWidth: 1,
+    borderColor: "#fed7aa",
+  },
+  locationText: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  locationLabel: {
+    color: "#94a3b8",
+    fontSize: 14,
+    fontWeight: "400",
+  },
+  locationValueRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  locationValue: {
+    color: "#ffffff",
+    fontSize: 15,
+    fontWeight: "700",
+    marginLeft: 4,
+    flex: 1,
+  },
+  bellButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  searchBar: {
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    height: 52,
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 16,
+    zIndex: 10,
+  },
+  searchInput: {
+    flex: 1,
+    marginLeft: 10,
+    color: "#111827",
+    fontWeight: "500",
+    fontSize: 15,
+    paddingVertical: 10,
+  },
+  clearButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "#f1f5f9",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 4,
+  },
+  scrollContent: {
+    paddingTop: 16,
+    paddingBottom: 110,
+  },
+  categoriesSection: {
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    color: "#111827",
+    fontWeight: "700",
+    fontSize: 18,
+    paddingHorizontal: 20,
+    marginBottom: 12,
+  },
+  categoryScroll: {
+    paddingHorizontal: 20,
+    gap: 10,
+  },
+  categoryChip: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 100,
+    borderWidth: 1,
+  },
+  categoryChipSelected: {
+    backgroundColor: "#ea580c",
+    borderColor: "#ea580c",
+  },
+  categoryChipDefault: {
+    backgroundColor: "#f1f5f9",
+    borderColor: "#e2e8f0",
+  },
+  categoryChipText: {
+    fontWeight: "600",
+    fontSize: 15,
+  },
+  categoryChipTextSelected: {
+    color: "#ffffff",
+  },
+  categoryChipTextDefault: {
+    color: "#374151",
+  },
+  feedContainer: {
+    paddingHorizontal: 16,
+  },
+});

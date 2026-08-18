@@ -131,7 +131,7 @@ export default function OnboardingScreen() {
                     animated: true,
                   })
                 }
-                className={`h-2.5 rounded-full transition-all ${
+                className={`h-2.5 rounded-full ${
                   isActive ? "w-8 bg-orange-500" : "w-2.5 bg-neutral-300"
                 }`}
               />
