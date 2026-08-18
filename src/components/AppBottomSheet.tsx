@@ -1,5 +1,5 @@
-import React from "react";
 import { BottomSheet, RNHostView } from "@expo/ui";
+import React from "react";
 import { Dimensions, View } from "react-native";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -24,10 +24,7 @@ export default function AppBottomSheet({
       showDragIndicator={showDragIndicator}
     >
       <RNHostView matchContents style={{ width: SCREEN_WIDTH }}>
-        <View
-          style={{ width: SCREEN_WIDTH, backgroundColor: "#ffffff" }}
-          className="px-5 pt-2 pb-8 bg-white w-full"
-        >
+        <View style={{ width: SCREEN_WIDTH }} className="px-5 pt-2 pb-8 w-full">
           {children}
         </View>
       </RNHostView>

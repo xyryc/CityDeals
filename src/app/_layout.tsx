@@ -20,6 +20,7 @@ export default function RootLayout() {
         <Stack.Screen name="screens/account" />
         <Stack.Screen name="screens/change-password" />
         <Stack.Screen name="screens/help-support" />
+        <Stack.Screen name="screens/terms-of-use" />
       </Stack>
     </AppProviders>
   );
