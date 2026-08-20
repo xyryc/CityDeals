@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import AppBottomSheet from "./AppBottomSheet";
 
 export const LANGUAGES = [
-  { id: "en", label: "English" },
-  { id: "es", label: "Spanish" },
-  { id: "pt", label: "Portuguese" },
+  { id: "en", label: "English", flag: "🇺🇸" },
+  { id: "es", label: "Spanish", flag: "🇪🇸" },
+  { id: "pt", label: "Portuguese", flag: "🇵🇹" },
 ];
 
 interface LanguageBottomSheetProps {
@@ -49,12 +49,13 @@ export default function LanguageBottomSheet({
               key={lang.id}
               activeOpacity={0.8}
               onPress={() => setTempLanguage(lang.label)}
-              className={`w-full h-14 rounded-2xl items-center justify-center border ${
+              className={`w-full h-14 rounded-2xl flex-row items-center justify-center border ${
                 isSelected
-                  ? "bg-orange-50/80 border-orange-400"
+                  ? "bg-orange-50 border-orange-400"
                   : "bg-slate-50 border-slate-100"
               }`}
             >
+              <Text className="text-xl mr-2.5">{lang.flag}</Text>
               <Text
                 className={`font-semibold text-lg ${
                   isSelected ? "text-orange-500" : "text-neutral-800"
@@ -71,7 +72,7 @@ export default function LanguageBottomSheet({
       <TouchableOpacity
         activeOpacity={0.85}
         onPress={handleSave}
-        className="w-full bg-orange-50/80 border border-orange-200/90 h-14 rounded-2xl items-center justify-center mt-5 active:bg-orange-100"
+        className="w-full bg-orange-50 border border-orange-200/90 h-14 rounded-2xl items-center justify-center mt-5 active:bg-orange-100"
       >
         <Text className="text-orange-500 font-bold text-lg">Save</Text>
       </TouchableOpacity>

@@ -74,22 +74,18 @@ export default function LanguageSelectionScreen() {
                   onPress={() => setSelectedLanguage(lang.id)}
                   className={`flex-row items-center justify-between px-5 h-16 rounded-2xl border ${
                     isSelected
-                      ? "bg-orange-50/80 border-orange-500 shadow-sm shadow-orange-500/10"
-                      : "bg-neutral-50/80 border-neutral-200"
+                      ? "bg-orange-50 border-orange-500"
+                      : "bg-neutral-50 border-neutral-200"
                   }`}
                 >
                   <View className="flex-row items-center">
                     <View
-                      className={`w-10 h-10 rounded-xl items-center justify-center mr-3.5 ${
-                        isSelected ? "bg-orange-100" : "bg-white border border-neutral-200"
+                      className={`w-12 h-12 rounded-2xl items-center justify-center mr-3.5 ${
+                        isSelected ? "bg-orange-100" : "bg-neutral-100 border border-neutral-200"
                       }`}
                     >
-                      <Text
-                        className={`font-bold text-base ${
-                          isSelected ? "text-orange-600" : "text-neutral-700"
-                        }`}
-                      >
-                        {lang.id.toUpperCase()}
+                      <Text className="text-2xl">
+                        {lang.flag}
                       </Text>
                     </View>
                     <View>

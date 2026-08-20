@@ -5,6 +5,7 @@ export interface LanguageOption {
   id: string;
   name: string;
   nativeName: string;
+  flag: string;
 }
 
 export const LANGUAGES: LanguageOption[] = [
@@ -12,16 +13,19 @@ export const LANGUAGES: LanguageOption[] = [
     id: "en",
     name: "English",
     nativeName: "English (US)",
+    flag: "🇺🇸",
   },
   {
     id: "es",
     name: "Spanish",
     nativeName: "Español",
+    flag: "🇪🇸",
   },
   {
     id: "pt",
     name: "Portuguese",
     nativeName: "Português",
+    flag: "🇵🇹",
   },
 ];
 
@@ -81,7 +85,7 @@ export const MOCK_DEALS: DealItem[] = [
   {
     id: "2",
     category: "Shopping",
-    image: require("../../assets/images/placeholder-deal.jpg"),
+    image: require("../../assets/images/placeholder-deal2.jpg"),
     dealHeading: "Nationwide Fast Food Deals",
     dealDescription: "Exclusive coupons, $6 Big Box & BOGO 50% Off.",
     isFavorite: true,
@@ -89,7 +93,7 @@ export const MOCK_DEALS: DealItem[] = [
   {
     id: "3",
     category: "Groceries",
-    image: require("../../assets/images/placeholder-deal.jpg"),
+    image: require("../../assets/images/placeholder-deal3.jpg"),
     dealHeading: "Special Summer Treats",
     dealDescription: "Get $2.50 Slush Floats & 1/2 Price Drinks all summer.",
     isFavorite: false,
@@ -105,7 +109,7 @@ export const MOCK_DEALS: DealItem[] = [
   {
     id: "5",
     category: "Beauty",
-    image: require("../../assets/images/placeholder-deal.jpg"),
+    image: require("../../assets/images/placeholder-deal2.jpg"),
     dealHeading: "Luxury Spa & Salon Package",
     dealDescription: "Complimentary haircut with complete spa treatment.",
     isFavorite: true,
