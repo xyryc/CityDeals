@@ -110,8 +110,8 @@ export const MOCK_DEALS: DealItem[] = [
     id: "5",
     category: "Beauty",
     image: require("../../assets/images/placeholder-deal2.jpg"),
-    dealHeading: "Luxury Spa & Salon Package",
-    dealDescription: "Complimentary haircut with complete spa treatment.",
+    dealHeading: "Burger & Fries 50% Discount",
+    dealDescription: "Complimentary burger and fries with cold drinks.",
     isFavorite: true,
   },
 ];

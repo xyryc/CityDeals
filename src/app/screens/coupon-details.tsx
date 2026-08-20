@@ -5,6 +5,7 @@ import {
   Image,
   Linking,
   ScrollView,
+  Share,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -24,20 +25,34 @@ export default function CouponDetailsScreen() {
   const dealHeading = params.dealHeading ?? "Coupon Deal";
   const dealDescription = params.dealDescription ?? "";
 
+  const handleShareDeal = async () => {
+    try {
+      const dealUrl = `https://citydeals.app/deals/${params.id || "1"}`;
+      await Share.share({
+        title: dealHeading,
+        message: `Check out this special offer on CityDeals! 🎉\n\n${dealHeading}\n${dealDescription}\n\nGet the coupon: ${dealUrl}`,
+        url: dealUrl,
+      });
+    } catch (error) {
+      console.log("Error sharing deal:", error);
+    }
+  };
+
   // Header height = status bar + 12 top padding + 44 button + 16 bottom padding
   const headerHeight = insets.top + 12 + 44 + 16;
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-white">
       <StatusBar style="light" />
 
       {/* Floating Header */}
       <View
-        style={[styles.header, { paddingTop: insets.top + 12, height: headerHeight }]}
+        className="absolute top-0 left-0 right-0 z-10 bg-[#0f3b5e] rounded-b-[28px] flex-row items-center justify-between px-4 pb-4"
+        style={{ paddingTop: insets.top + 12, height: headerHeight }}
         pointerEvents="box-none"
       >
         {/* Background texture clipped separately to the rounded shape */}
-        <View style={styles.headerBgClip}>
+        <View className="absolute inset-0 rounded-b-[28px] overflow-hidden">
           <Image
             source={require("../../../assets/images/line-background.png")}
             style={StyleSheet.absoluteFill}
@@ -48,14 +63,20 @@ export default function CouponDetailsScreen() {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => router.back()}
-          style={styles.headerBtn}
+          className="w-11 h-11 rounded-2xl bg-white items-center justify-center z-10 shadow-sm"
         >
           <Feather name="arrow-left" size={20} color="#1e293b" />
         </TouchableOpacity>
 
-        <Text style={styles.headerTitle}>Coupon Details</Text>
+        <Text className="text-white text-lg font-bold z-10">
+          Coupon Details
+        </Text>
 
-        <TouchableOpacity activeOpacity={0.8} style={styles.headerBtn}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={handleShareDeal}
+          className="w-11 h-11 rounded-2xl bg-white items-center justify-center z-10 shadow-sm"
+        >
           <Ionicons name="share-social-outline" size={20} color="#1e293b" />
         </TouchableOpacity>
       </View>
@@ -73,7 +94,7 @@ export default function CouponDetailsScreen() {
           <View className="rounded-3xl overflow-hidden border border-neutral-200">
             <Image
               source={require("../../../assets/images/placeholder-deal.jpg")}
-              style={styles.posterImage}
+              className="w-full h-[60vh]"
               resizeMode="cover"
             />
           </View>
@@ -81,11 +102,10 @@ export default function CouponDetailsScreen() {
 
         {/* Info Section */}
         <View className="px-5 pt-5 bg-white">
-
           {/* Store logo + deal title row */}
           <View className="flex-row items-center mb-5">
-            <View style={styles.storeLogo}>
-              <Text style={styles.storeLogoText}>
+            <View className="w-12 h-12 rounded-full bg-amber-100 border-2 border-amber-400 items-center justify-center mr-3.5">
+              <Text className="text-2xl font-extrabold text-amber-700">
                 {dealHeading.charAt(0).toUpperCase()}
               </Text>
             </View>
@@ -102,8 +122,7 @@ export default function CouponDetailsScreen() {
           {/* Save coupon CTA */}
           <TouchableOpacity
             activeOpacity={0.85}
-            className="flex-row items-center justify-center gap-2.5 rounded-2xl py-4 mb-6"
-            style={styles.darkBtn}
+            className="flex-row items-center justify-center gap-2.5 rounded-2xl py-4 mb-6 bg-[#111827] shadow-sm"
           >
             <Ionicons name="heart-outline" size={20} color="#ffffff" />
             <Text className="text-white text-lg font-bold">Save coupon</Text>
@@ -127,8 +146,7 @@ export default function CouponDetailsScreen() {
             </View>
             <TouchableOpacity
               activeOpacity={0.85}
-              className="flex-row items-center gap-1.5 rounded-2xl px-3.5 py-3"
-              style={styles.darkBtn}
+              className="flex-row items-center gap-1.5 rounded-2xl px-3.5 py-3 bg-[#111827] shadow-sm"
             >
               <Ionicons name="location-outline" size={16} color="#ffffff" />
               <Text className="text-white text-base font-semibold">
@@ -144,16 +162,16 @@ export default function CouponDetailsScreen() {
           <View className="flex-row gap-2 mb-3">
             <TouchableOpacity
               activeOpacity={0.85}
-              className="flex-1 flex-row items-center justify-center gap-2 rounded-2xl py-4"
-              style={styles.darkBtn}
+              className="flex-1 flex-row items-center justify-center gap-2 rounded-2xl py-4 bg-[#111827] shadow-sm"
             >
               <Ionicons name="globe-outline" size={18} color="#ffffff" />
-              <Text className="text-white text-base font-semibold">Website</Text>
+              <Text className="text-white text-base font-semibold">
+                Website
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.85}
-              className="flex-1 flex-row items-center justify-center gap-2 rounded-2xl py-4"
-              style={styles.darkBtn}
+              className="flex-1 flex-row items-center justify-center gap-2 rounded-2xl py-4 bg-[#111827] shadow-sm"
             >
               <Ionicons
                 name="information-circle-outline"
@@ -170,8 +188,7 @@ export default function CouponDetailsScreen() {
           <View className="flex-row gap-2">
             <TouchableOpacity
               activeOpacity={0.85}
-              className="flex-1 items-center justify-center rounded-2xl py-4"
-              style={styles.darkBtn}
+              className="flex-1 items-center justify-center rounded-2xl py-4 bg-[#111827] shadow-sm"
               onPress={() =>
                 Linking.openURL("https://facebook.com").catch(() => {})
               }
@@ -180,8 +197,7 @@ export default function CouponDetailsScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.85}
-              className="flex-1 items-center justify-center rounded-2xl py-4"
-              style={styles.darkBtn}
+              className="flex-1 items-center justify-center rounded-2xl py-4 bg-[#111827] shadow-sm"
               onPress={() =>
                 Linking.openURL("https://instagram.com").catch(() => {})
               }
@@ -190,11 +206,8 @@ export default function CouponDetailsScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.85}
-              className="flex-1 items-center justify-center rounded-2xl py-4"
-              style={styles.darkBtn}
-              onPress={() =>
-                Linking.openURL("https://wa.me/").catch(() => {})
-              }
+              className="flex-1 items-center justify-center rounded-2xl py-4 bg-[#111827] shadow-sm"
+              onPress={() => Linking.openURL("https://wa.me/").catch(() => {})}
             >
               <FontAwesome name="whatsapp" size={22} color="#ffffff" />
             </TouchableOpacity>
@@ -204,80 +217,3 @@ export default function CouponDetailsScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
-
-  // Floating header — absolutely positioned over the scroll content
-  header: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-    backgroundColor: "#0f3b5e",
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-  },
-
-  // Inner view that clips the background texture to the rounded shape only
-  headerBgClip: {
-    ...StyleSheet.absoluteFill,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
-    overflow: "hidden",
-  },
-
-  headerBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1,
-  },
-  headerTitle: {
-    color: "#ffffff",
-    fontSize: 18,
-    fontWeight: "700",
-    zIndex: 1,
-  },
-
-  // Poster image — StyleSheet as requested
-  posterImage: {
-    width: "100%",
-    height: 420,
-  },
-
-  // Store logo avatar
-  storeLogo: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: "#fef3c7",
-    borderWidth: 2,
-    borderColor: "#fbbf24",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 14,
-  },
-  storeLogoText: {
-    fontSize: 22,
-    fontWeight: "800",
-    color: "#b45309",
-  },
-
-  // Shared dark button background — avoids NativeWind bg classes on interactive elements
-  darkBtn: {
-    backgroundColor: "#111827",
-  },
-});

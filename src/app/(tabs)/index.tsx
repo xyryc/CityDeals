@@ -1,7 +1,7 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   Animated,
   Image,
@@ -65,7 +65,7 @@ export default function HomeScreen() {
         (deal) =>
           deal.dealHeading.toLowerCase().includes(q) ||
           deal.dealDescription.toLowerCase().includes(q) ||
-          (deal.category && deal.category.toLowerCase().includes(q))
+          (deal.category && deal.category.toLowerCase().includes(q)),
       );
     }
 
@@ -124,7 +124,7 @@ export default function HomeScreen() {
                   numberOfLines={1}
                   className="text-white text-base font-bold ml-1 flex-1"
                 >
-                  4/A 28013 Madrid, Spain 🇪🇸
+                  4/A 28013 Madrid, Spain
                 </Text>
               </View>
             </View>
@@ -179,7 +179,7 @@ export default function HomeScreen() {
         scrollEventThrottle={16}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: false }
+          { useNativeDriver: false },
         )}
         contentContainerStyle={{ paddingTop: 16, paddingBottom: 110 }}
       >

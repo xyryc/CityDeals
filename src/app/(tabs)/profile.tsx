@@ -45,7 +45,7 @@ export default function ProfileScreen() {
                   Welcome back,
                 </Text>
                 <Text className="text-neutral-900 font-bold text-lg mt-0.5">
-                  Nasimul Noyon
+                  Mohammad Anik
                 </Text>
               </View>
             </View>
