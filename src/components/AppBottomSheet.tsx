@@ -1,8 +1,10 @@
-import { BottomSheet, RNHostView } from "@expo/ui";
 import React from "react";
-import { Dimensions, View } from "react-native";
-
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
+import {
+  Modal,
+  Pressable,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 
 interface AppBottomSheetProps {
   isPresented: boolean;
@@ -18,16 +20,27 @@ export default function AppBottomSheet({
   children,
 }: AppBottomSheetProps) {
   return (
-    <BottomSheet
-      isPresented={isPresented}
-      onDismiss={onDismiss}
-      showDragIndicator={showDragIndicator}
+    <Modal
+      visible={isPresented}
+      transparent
+      animationType="slide"
+      onRequestClose={onDismiss}
     >
-      <RNHostView matchContents style={{ width: SCREEN_WIDTH }}>
-        <View style={{ width: SCREEN_WIDTH }} className="px-5 pt-2 pb-8 w-full">
-          {children}
-        </View>
-      </RNHostView>
-    </BottomSheet>
+      <View className="flex-1 justify-end bg-black/50">
+        {/* Backdrop touch area to dismiss */}
+        <Pressable className="flex-1" onPress={onDismiss} />
+
+        {/* Bottom Sheet Container */}
+        <TouchableWithoutFeedback>
+          <View className="bg-white rounded-t-[32px] px-6 pt-3 pb-10 shadow-2xl border-t border-neutral-100">
+            {/* Grabber indicator */}
+            {showDragIndicator && (
+              <View className="w-12 h-1.5 rounded-full bg-neutral-200 self-center mb-4" />
+            )}
+            {children}
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    </Modal>
   );
 }

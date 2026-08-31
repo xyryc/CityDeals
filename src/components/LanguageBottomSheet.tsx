@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import AppBottomSheet from "./AppBottomSheet";
+import PrimaryButton from "./PrimaryButton";
 
 export const LANGUAGES = [
-  { id: "en", label: "United States", flag: "🇺🇸" },
-  { id: "es", label: "Spain", flag: "🇪🇸" },
-  { id: "pt", label: "Portugal", flag: "🇧🇷" },
+  { id: "en", label: "United States", flag: "🇺🇸", nativeName: "English (US)" },
+  { id: "es", label: "Spain", flag: "🇪🇸", nativeName: "Español" },
+  { id: "pt", label: "Portugal", flag: "🇧🇷", nativeName: "Português" },
 ];
 
 interface LanguageBottomSheetProps {
@@ -36,7 +38,7 @@ export default function LanguageBottomSheet({
 
   return (
     <AppBottomSheet isPresented={isPresented} onDismiss={onDismiss}>
-      <Text className="text-neutral-900 font-bold text-lg text-center mt-1 mb-5">
+      <Text className="text-neutral-900 font-extrabold text-xl text-center mt-1 mb-5">
         Choose Your Language
       </Text>
 
@@ -49,33 +51,58 @@ export default function LanguageBottomSheet({
               key={lang.id}
               activeOpacity={0.8}
               onPress={() => setTempLanguage(lang.label)}
-              className={`w-full h-14 rounded-2xl flex-row items-center justify-center border ${
+              className={`w-full h-16 rounded-2xl flex-row items-center justify-between px-4 border ${
                 isSelected
-                  ? "bg-orange-50 border-orange-400"
-                  : "bg-slate-50 border-slate-100"
+                  ? "bg-orange-50 border-orange-500"
+                  : "bg-neutral-50 border-neutral-200"
               }`}
             >
-              <Text className="text-xl mr-2.5">{lang.flag}</Text>
-              <Text
-                className={`font-semibold text-lg ${
-                  isSelected ? "text-orange-500" : "text-neutral-800"
+              <View className="flex-row items-center">
+                <View
+                  className={`w-10 h-10 rounded-xl items-center justify-center mr-3.5 ${
+                    isSelected
+                      ? "bg-orange-100"
+                      : "bg-white border border-neutral-200"
+                  }`}
+                >
+                  <Text className="text-2xl">{lang.flag}</Text>
+                </View>
+                <View>
+                  <Text
+                    className={`font-bold text-lg ${
+                      isSelected ? "text-orange-600" : "text-neutral-900"
+                    }`}
+                  >
+                    {lang.label}
+                  </Text>
+                  <Text className="text-neutral-500 text-base">
+                    {lang.nativeName}
+                  </Text>
+                </View>
+              </View>
+
+              <View
+                className={`w-6 h-6 rounded-full items-center justify-center border ${
+                  isSelected
+                    ? "bg-orange-500 border-orange-500"
+                    : "border-neutral-300 bg-white"
                 }`}
               >
-                {lang.label}
-              </Text>
+                {isSelected && (
+                  <Ionicons name="checkmark" size={16} color="white" />
+                )}
+              </View>
             </TouchableOpacity>
           );
         })}
       </View>
 
       {/* Save CTA Button */}
-      <TouchableOpacity
-        activeOpacity={0.85}
+      <PrimaryButton
+        title="Save Language"
         onPress={handleSave}
-        className="w-full bg-orange-50 border border-orange-200/90 h-14 rounded-2xl items-center justify-center mt-5 active:bg-orange-100"
-      >
-        <Text className="text-orange-500 font-bold text-lg">Save</Text>
-      </TouchableOpacity>
+        className="mt-6"
+      />
     </AppBottomSheet>
   );
 }
