@@ -14,8 +14,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PrimaryButton from "../../components/PrimaryButton";
+import { useAuth } from "../../providers/AuthProvider";
 
 export default function RegisterScreen() {
+  const { login } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -31,11 +33,17 @@ export default function RegisterScreen() {
       alert("Please agree to the Terms & Conditions to proceed.");
       return;
     }
+    login(email || "user@citydeals.com", fullName || "New User");
     router.replace("/(tabs)" as any);
   };
 
   const handleGoogleSignIn = () => {
-    alert("Continue with Google pressed");
+    login("google.user@citydeals.com", "Google User");
+    router.replace("/(tabs)" as any);
+  };
+
+  const handleContinueAsGuest = () => {
+    router.replace("/(tabs)" as any);
   };
 
   return (
@@ -256,6 +264,17 @@ export default function RegisterScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
+
+            {/* Continue as Guest Link */}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={handleContinueAsGuest}
+              className="items-center justify-center py-2 mt-1"
+            >
+              <Text className="text-neutral-500 font-semibold text-base underline">
+                Continue as Guest
+              </Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

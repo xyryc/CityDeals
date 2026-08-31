@@ -6,8 +6,10 @@ import { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import CurvedHeader from "../../components/CurvedHeader";
 import LanguageBottomSheet from "../../components/LanguageBottomSheet";
+import { useAuth } from "../../providers/AuthProvider";
 
 export default function ProfileScreen() {
+  const { isLoggedIn, user, logout } = useAuth();
   const [pushNotification, setPushNotification] = useState(true);
 
   // Language state & bottom sheet visibility
@@ -15,7 +17,12 @@ export default function ProfileScreen() {
   const [isLanguageSheetOpen, setIsLanguageSheetOpen] = useState(false);
 
   const handleLogout = () => {
+    logout();
     router.replace("/login" as any);
+  };
+
+  const handleGoToAuth = () => {
+    router.push("/login" as any);
   };
 
   return (
@@ -42,12 +49,24 @@ export default function ProfileScreen() {
               />
               <View className="ml-3.5 flex-1">
                 <Text className="text-neutral-500 text-base font-normal">
-                  Welcome back,
+                  {isLoggedIn ? "Welcome back," : "Browsing as"}
                 </Text>
                 <Text className="text-neutral-900 font-bold text-lg mt-0.5">
-                  Mohammad Anik
+                  {isLoggedIn ? user?.name || "Nasimul Noyon" : "Guest User"}
                 </Text>
               </View>
+
+              {!isLoggedIn && (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={handleGoToAuth}
+                  className="bg-orange-50 border border-orange-200 px-3.5 py-2 rounded-2xl"
+                >
+                  <Text className="text-orange-600 font-bold text-base">
+                    Sign In
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
 
             {/* Stats Row */}
@@ -55,7 +74,9 @@ export default function ProfileScreen() {
               {/* Stat 1: Save coupons */}
               <View className="flex-1 bg-neutral-50/70 border border-neutral-100/90 rounded-2xl p-4 mr-2">
                 <View className="flex-row items-center justify-between">
-                  <Text className="text-2xl font-black text-[#0f3455]">12</Text>
+                  <Text className="text-2xl font-black text-[#0f3455]">
+                    {isLoggedIn ? "12" : "0"}
+                  </Text>
                   <View className="w-10 h-10 rounded-full bg-orange-50 items-center justify-center">
                     <MaterialCommunityIcons
                       name="ticket-percent-outline"
@@ -72,7 +93,9 @@ export default function ProfileScreen() {
               {/* Stat 2: Coupon redeemed */}
               <View className="flex-1 bg-neutral-50/70 border border-neutral-100/90 rounded-2xl p-4 ml-2">
                 <View className="flex-row items-center justify-between">
-                  <Text className="text-2xl font-black text-[#0f3455]">06</Text>
+                  <Text className="text-2xl font-black text-[#0f3455]">
+                    {isLoggedIn ? "06" : "0"}
+                  </Text>
                   <View className="w-10 h-10 rounded-full bg-orange-50 items-center justify-center">
                     <Ionicons
                       name="checkmark-circle-outline"
@@ -95,10 +118,16 @@ export default function ProfileScreen() {
 
           {/* Menu Items with Uniform Fixed Height (h-[60px]) */}
           <View className="px-4 gap-y-3">
-            {/* Account Info */}
+            {/* Account Info (only available when logged in or redirects to login) */}
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => router.push("/screens/account" as any)}
+              onPress={() => {
+                if (!isLoggedIn) {
+                  router.push("/login" as any);
+                } else {
+                  router.push("/screens/account" as any);
+                }
+              }}
               className="bg-white border border-neutral-100 rounded-2xl px-4 h-[60px] flex-row items-center justify-between shadow-sm"
             >
               <View className="flex-row items-center flex-1">
@@ -113,7 +142,13 @@ export default function ProfileScreen() {
             {/* Change password */}
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => router.push("/screens/change-password" as any)}
+              onPress={() => {
+                if (!isLoggedIn) {
+                  router.push("/login" as any);
+                } else {
+                  router.push("/screens/change-password" as any);
+                }
+              }}
               className="bg-white border border-neutral-100 rounded-2xl px-4 h-[60px] flex-row items-center justify-between shadow-sm"
             >
               <View className="flex-row items-center flex-1">
@@ -198,15 +233,28 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Log Out Button */}
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={handleLogout}
-            className="bg-red-50 border border-red-100/80 rounded-2xl py-4 flex-row items-center justify-center mx-4 mt-5 active:bg-red-100"
-          >
-            <Feather name="log-out" size={20} color="#ef4444" />
-            <Text className="text-red-500 font-bold text-lg ml-2">Log Out</Text>
-          </TouchableOpacity>
+          {/* Log Out or Sign In CTA Button */}
+          {isLoggedIn ? (
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={handleLogout}
+              className="bg-red-50 border border-red-100/80 rounded-2xl py-4 flex-row items-center justify-center mx-4 mt-5 active:bg-red-100"
+            >
+              <Feather name="log-out" size={20} color="#ef4444" />
+              <Text className="text-red-500 font-bold text-lg ml-2">Log Out</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={handleGoToAuth}
+              className="bg-orange-500 rounded-2xl py-4 flex-row items-center justify-center mx-4 mt-5 shadow-md shadow-orange-500/25"
+            >
+              <Feather name="log-in" size={20} color="#ffffff" />
+              <Text className="text-white font-bold text-lg ml-2">
+                Sign In / Register
+              </Text>
+            </TouchableOpacity>
+          )}
         </ScrollView>
 
         {/* Modular Reusable LanguageBottomSheet */}

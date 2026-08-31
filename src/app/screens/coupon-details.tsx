@@ -1,4 +1,4 @@
-import { Feather, FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { Feather, FontAwesome, FontAwesome6, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import {
   Image,
   Linking,
+  Modal,
   Platform,
   ScrollView,
   Share,
@@ -15,10 +16,16 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAuth } from "../../providers/AuthProvider";
 
 export default function CouponDetailsScreen() {
   const insets = useSafeAreaInsets();
+  const { isLoggedIn } = useAuth();
+
+  const [isSaved, setIsSaved] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isAuthPromptVisible, setIsAuthPromptVisible] = useState(false);
+  const [isRedeemModalVisible, setIsRedeemModalVisible] = useState(false);
 
   const params = useLocalSearchParams<{
     id: string;
@@ -30,6 +37,7 @@ export default function CouponDetailsScreen() {
   const dealHeading = params.dealHeading ?? "Coupon Deal";
   const dealDescription = params.dealDescription ?? "";
   const dealUrl = `https://citydeals.app/deals/${params.id || "1"}`;
+  const couponCode = `CITY-${(params.id || "8492").padStart(4, "0")}-SAVE`;
   const shareMessage = `Check out this special offer on CityDeals! 🎉\n\n${dealHeading}\n${dealDescription}\n\nGet the coupon: ${dealUrl}`;
 
   const showToast = (msg: string) => {
@@ -37,6 +45,21 @@ export default function CouponDetailsScreen() {
     setTimeout(() => {
       setToastMessage(null);
     }, 3000);
+  };
+
+  // Redeem button handler (checks if guest vs authenticated)
+  const handleRedeemCoupon = () => {
+    if (!isLoggedIn) {
+      setIsAuthPromptVisible(true);
+    } else {
+      setIsRedeemModalVisible(true);
+    }
+  };
+
+  // Copy coupon code
+  const handleCopyCouponCode = async () => {
+    await Clipboard.setStringAsync(couponCode);
+    showToast("Coupon code copied to clipboard!");
   };
 
   // General share handler
@@ -206,13 +229,41 @@ export default function CouponDetailsScreen() {
             </View>
           </View>
 
-          {/* Save coupon CTA */}
+          {/* Primary Action: Redeem Coupon */}
           <TouchableOpacity
             activeOpacity={0.85}
-            className="flex-row items-center justify-center gap-2.5 rounded-2xl py-4 mb-6 bg-[#111827] shadow-sm"
+            onPress={handleRedeemCoupon}
+            className="flex-row items-center justify-center gap-2.5 rounded-2xl py-4 mb-3 bg-orange-500 shadow-md shadow-orange-500/25"
           >
-            <Ionicons name="heart-outline" size={20} color="#ffffff" />
-            <Text className="text-white text-lg font-bold">Save coupon</Text>
+            <Ionicons name="ticket" size={22} color="#ffffff" />
+            <Text className="text-white text-lg font-bold">Redeem Coupon</Text>
+          </TouchableOpacity>
+
+          {/* Secondary Action: Save coupon */}
+          <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={() => {
+              setIsSaved(!isSaved);
+              showToast(isSaved ? "Coupon removed from saved." : "Coupon saved successfully!");
+            }}
+            className={`flex-row items-center justify-center gap-2.5 rounded-2xl py-4 mb-6 border ${
+              isSaved
+                ? "bg-orange-50 border-orange-200"
+                : "bg-[#111827] border-neutral-900"
+            } shadow-sm`}
+          >
+            <Ionicons
+              name={isSaved ? "heart" : "heart-outline"}
+              size={20}
+              color={isSaved ? "#ea580c" : "#ffffff"}
+            />
+            <Text
+              className={`text-lg font-bold ${
+                isSaved ? "text-orange-600" : "text-white"
+              }`}
+            >
+              {isSaved ? "Coupon Saved" : "Save coupon"}
+            </Text>
           </TouchableOpacity>
 
           {/* Divider */}
@@ -309,6 +360,138 @@ export default function CouponDetailsScreen() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Guest Authentication Required Modal */}
+      <Modal
+        visible={isAuthPromptVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setIsAuthPromptVisible(false)}
+      >
+        <View className="flex-1 bg-black/60 items-center justify-center px-5">
+          <View className="w-full max-w-sm bg-white rounded-3xl p-6 items-center shadow-2xl">
+            <View className="w-16 h-16 rounded-full bg-orange-100 items-center justify-center mb-4 border border-orange-200">
+              <Ionicons name="lock-closed" size={28} color="#ea580c" />
+            </View>
+
+            <Text className="text-xl font-extrabold text-neutral-900 text-center tracking-tight">
+              Sign In to Redeem
+            </Text>
+            <Text className="text-neutral-500 text-base text-center mt-2 leading-6">
+              You are currently browsing as a guest. Please sign in or create an account to redeem this discount coupon.
+            </Text>
+
+            <View className="w-full gap-y-2.5 mt-6">
+              {/* Log In Button */}
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={() => {
+                  setIsAuthPromptVisible(false);
+                  router.push("/(auth)/login" as any);
+                }}
+                className="w-full bg-orange-500 rounded-2xl py-3.5 items-center justify-center shadow-md shadow-orange-500/25"
+              >
+                <Text className="text-white font-bold text-lg">Log In</Text>
+              </TouchableOpacity>
+
+              {/* Create Account Button */}
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={() => {
+                  setIsAuthPromptVisible(false);
+                  router.push("/(auth)/register" as any);
+                }}
+                className="w-full bg-neutral-100 rounded-2xl py-3.5 items-center justify-center border border-neutral-200"
+              >
+                <Text className="text-neutral-800 font-bold text-base">
+                  Create Free Account
+                </Text>
+              </TouchableOpacity>
+
+              {/* Cancel Button */}
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setIsAuthPromptVisible(false)}
+                className="w-full py-2.5 items-center justify-center mt-1"
+              >
+                <Text className="text-neutral-500 font-semibold text-base">
+                  Keep Browsing as Guest
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Authenticated Coupon Redemption Modal */}
+      <Modal
+        visible={isRedeemModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setIsRedeemModalVisible(false)}
+      >
+        <View className="flex-1 bg-black/60 justify-end">
+          <View className="bg-white rounded-t-[32px] px-6 pt-6 pb-10 items-center">
+            {/* Grabber indicator */}
+            <View className="w-12 h-1.5 rounded-full bg-neutral-200 mb-5" />
+
+            <View className="w-14 h-14 rounded-full bg-emerald-100 items-center justify-center mb-3">
+              <Ionicons name="checkmark-circle" size={32} color="#10b981" />
+            </View>
+
+            <Text className="text-2xl font-extrabold text-neutral-900 text-center tracking-tight">
+              Ready to Redeem!
+            </Text>
+            <Text className="text-neutral-500 text-base text-center mt-1">
+              Present this coupon code or barcode to the cashier at checkout.
+            </Text>
+
+            {/* Simulated Barcode Container */}
+            <View className="w-full bg-neutral-50 rounded-2xl p-5 items-center border border-neutral-200 mt-5">
+              <View className="flex-row items-center justify-center gap-1 h-14 w-full mb-3 px-4">
+                {[4, 2, 6, 3, 2, 5, 2, 4, 3, 2, 6, 4, 2, 5, 3, 2, 4, 6, 2, 4, 3, 5, 2].map(
+                  (width, index) => (
+                    <View
+                      key={index}
+                      style={{ width }}
+                      className="h-full bg-neutral-900 rounded-sm"
+                    />
+                  )
+                )}
+              </View>
+
+              {/* Coupon Code Pill */}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={handleCopyCouponCode}
+                className="flex-row items-center bg-white border border-orange-200 px-4 py-2 rounded-full shadow-sm"
+              >
+                <Text className="text-orange-600 font-extrabold text-lg tracking-wider mr-2">
+                  {couponCode}
+                </Text>
+                <MaterialCommunityIcons
+                  name="content-copy"
+                  size={16}
+                  color="#ea580c"
+                />
+              </TouchableOpacity>
+            </View>
+
+            <Text className="text-neutral-400 text-sm mt-3">
+              Valid until September 30, 2026 • Single Use Only
+            </Text>
+
+            {/* Done CTA */}
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={() => setIsRedeemModalVisible(false)}
+              className="w-full bg-neutral-900 rounded-2xl py-4 items-center justify-center mt-6 shadow-sm"
+            >
+              <Text className="text-white font-bold text-lg">Done</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {/* Toast Notification Banner */}
       {toastMessage && (
