@@ -33,12 +33,12 @@ export default function RegisterScreen() {
       alert("Please agree to the Terms & Conditions to proceed.");
       return;
     }
-    login(email || "user@citydeals.com", fullName || "New User");
+    login(email || "user@citydeals.ai", fullName || "New User");
     router.replace("/(tabs)" as any);
   };
 
   const handleGoogleSignIn = () => {
-    login("google.user@citydeals.com", "Google User");
+    login("google.user@citydeals.ai", "Google User");
     router.replace("/(tabs)" as any);
   };
 

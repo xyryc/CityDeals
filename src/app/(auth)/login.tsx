@@ -24,12 +24,12 @@ export default function LoginScreen() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = () => {
-    login(email || "user@citydeals.com", "Nasimul Noyon");
+    login(email || "user@citydeals.ai", "Nasimul Noyon");
     router.replace("/(tabs)" as any);
   };
 
   const handleGoogleSignIn = () => {
-    login("google.user@citydeals.com", "Google User");
+    login("google.user@citydeals.ai", "Google User");
     router.replace("/(tabs)" as any);
   };
 

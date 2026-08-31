@@ -83,7 +83,7 @@ export default function TermsOfUseScreen() {
               6. Modifications & Contact
             </Text>
             <Text className="text-neutral-600 text-base leading-6">
-              CityDeals reserves the right to modify or replace these terms at any time. If you have questions regarding these terms, please contact us at support@citydeals.com.
+              CityDeals reserves the right to modify or replace these terms at any time. If you have questions regarding these terms, please contact us at support@citydeals.ai.
             </Text>
           </View>
         </View>

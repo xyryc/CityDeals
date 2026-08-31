@@ -16,6 +16,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MOCK_DEALS } from "../../config/constants";
 import { useAuth } from "../../providers/AuthProvider";
 
 export default function CouponDetailsScreen() {
@@ -29,15 +30,19 @@ export default function CouponDetailsScreen() {
 
   const params = useLocalSearchParams<{
     id: string;
-    dealHeading: string;
-    dealDescription: string;
-    category: string;
+    dealHeading?: string;
+    dealDescription?: string;
+    category?: string;
   }>();
 
-  const dealHeading = params.dealHeading ?? "Coupon Deal";
-  const dealDescription = params.dealDescription ?? "";
-  const dealUrl = `https://citydeals.app/deals/${params.id || "1"}`;
-  const couponCode = `CITY-${(params.id || "8492").padStart(4, "0")}-SAVE`;
+  const dealId = params.id || "1";
+  const matchedDeal = MOCK_DEALS.find((d) => d.id === dealId);
+
+  const dealHeading = params.dealHeading || matchedDeal?.dealHeading || "Exclusive Coupon Deal";
+  const dealDescription = params.dealDescription || matchedDeal?.dealDescription || "Show this coupon to get instant savings at checkout.";
+  const dealImage = matchedDeal?.image || require("../../../assets/images/placeholder-deal.jpg");
+  const dealUrl = `https://citydeals.ai/deals/${dealId}`;
+  const couponCode = `CITY-${dealId.padStart(4, "0")}-SAVE`;
   const shareMessage = `Check out this special offer on CityDeals! 🎉\n\n${dealHeading}\n${dealDescription}\n\nGet the coupon: ${dealUrl}`;
 
   const showToast = (msg: string) => {
@@ -60,6 +65,13 @@ export default function CouponDetailsScreen() {
   const handleCopyCouponCode = async () => {
     await Clipboard.setStringAsync(couponCode);
     showToast("Coupon code copied to clipboard!");
+  };
+
+  // Download App Handler
+  const handleDownloadApp = () => {
+    Linking.openURL("https://citydeals.ai/download").catch(() => {
+      showToast("Opening app store download page...");
+    });
   };
 
   // General share handler
@@ -174,7 +186,13 @@ export default function CouponDetailsScreen() {
 
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              router.replace("/(tabs)" as any);
+            }
+          }}
           className="w-11 h-11 rounded-2xl bg-white items-center justify-center z-10 shadow-sm"
         >
           <Feather name="arrow-left" size={20} color="#1e293b" />
@@ -199,11 +217,37 @@ export default function CouponDetailsScreen() {
           paddingBottom: insets.bottom + 32,
         }}
       >
+        {/* Smart App Download Banner for Shared Link Visitors */}
+        {!isLoggedIn && (
+          <View className="mx-4 mt-4 bg-orange-50/90 border border-orange-200 rounded-3xl p-4 flex-row items-center justify-between shadow-sm">
+            <View className="flex-row items-center flex-1 mr-3">
+              <View className="w-11 h-11 rounded-2xl bg-orange-500 items-center justify-center mr-3 shadow-sm">
+                <Ionicons name="sparkles" size={20} color="#ffffff" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-neutral-900 font-bold text-base">
+                  Get the CityDeals App
+                </Text>
+                <Text className="text-neutral-600 text-sm mt-0.5">
+                  Download free to redeem this coupon in-store.
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={handleDownloadApp}
+              className="bg-neutral-900 px-3.5 py-2.5 rounded-xl active:bg-neutral-800 shadow-sm"
+            >
+              <Text className="text-white font-bold text-sm">Get App</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* Poster card with padding and border */}
         <View className="px-4 pt-4">
           <View className="rounded-3xl overflow-hidden border border-neutral-200">
             <Image
-              source={require("../../../assets/images/placeholder-deal.jpg")}
+              source={typeof dealImage === "string" ? { uri: dealImage } : dealImage}
               className="w-full h-[420px]"
               resizeMode="cover"
             />
@@ -408,11 +452,25 @@ export default function CouponDetailsScreen() {
                 </Text>
               </TouchableOpacity>
 
+              {/* Download App CTA for Web Visitors */}
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={() => {
+                  setIsAuthPromptVisible(false);
+                  handleDownloadApp();
+                }}
+                className="w-full bg-orange-50 border border-orange-200 rounded-2xl py-3 items-center justify-center"
+              >
+                <Text className="text-orange-600 font-bold text-base">
+                  📲 Download CityDeals App
+                </Text>
+              </TouchableOpacity>
+
               {/* Cancel Button */}
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => setIsAuthPromptVisible(false)}
-                className="w-full py-2.5 items-center justify-center mt-1"
+                className="w-full py-2 items-center justify-center mt-1"
               >
                 <Text className="text-neutral-500 font-semibold text-base">
                   Keep Browsing as Guest
@@ -443,28 +501,20 @@ export default function CouponDetailsScreen() {
               Ready to Redeem!
             </Text>
             <Text className="text-neutral-500 text-base text-center mt-1">
-              Present this coupon code or barcode to the cashier at checkout.
+              Scan this QR code or show the coupon code to the cashier at checkout.
             </Text>
 
-            {/* Simulated Barcode Container */}
-            <View className="w-full bg-neutral-50 rounded-2xl p-5 items-center border border-neutral-200 mt-5">
-              <View className="flex-row items-center justify-center gap-1 h-14 w-full mb-3 px-4">
-                {[4, 2, 6, 3, 2, 5, 2, 4, 3, 2, 6, 4, 2, 5, 3, 2, 4, 6, 2, 4, 3, 5, 2].map(
-                  (width, index) => (
-                    <View
-                      key={index}
-                      style={{ width }}
-                      className="h-full bg-neutral-900 rounded-sm"
-                    />
-                  )
-                )}
+            {/* QR Code Container */}
+            <View className="w-full bg-neutral-50 rounded-3xl p-5 items-center border border-neutral-200 mt-5">
+              <View className="bg-white p-4 rounded-2xl border border-neutral-200/80 shadow-sm items-center justify-center mb-4">
+                <Ionicons name="qr-code" size={160} color="#0f172a" />
               </View>
 
               {/* Coupon Code Pill */}
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={handleCopyCouponCode}
-                className="flex-row items-center bg-white border border-orange-200 px-4 py-2 rounded-full shadow-sm"
+                className="flex-row items-center bg-white border border-orange-200 px-5 py-2.5 rounded-full shadow-sm"
               >
                 <Text className="text-orange-600 font-extrabold text-lg tracking-wider mr-2">
                   {couponCode}

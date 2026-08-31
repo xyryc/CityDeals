@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   const login = (
-    email = "user@citydeals.com",
+    email = "user@citydeals.ai",
     name = "Nasimul Noyon"
   ) => {
     setIsLoggedIn(true);
