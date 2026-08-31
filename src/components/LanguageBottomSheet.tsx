@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import AppBottomSheet from "./AppBottomSheet";
 
 export const LANGUAGES = [
-  { id: "en", label: "English", flag: "🇺🇸" },
-  { id: "es", label: "Spanish", flag: "🇪🇸" },
-  { id: "pt", label: "Portuguese", flag: "🇵🇹" },
+  { id: "en", label: "United States", flag: "🇺🇸" },
+  { id: "es", label: "Spain", flag: "🇪🇸" },
+  { id: "pt", label: "Portugal", flag: "🇧🇷" },
 ];
 
 interface LanguageBottomSheetProps {
