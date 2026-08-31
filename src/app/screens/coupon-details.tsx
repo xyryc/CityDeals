@@ -1,9 +1,12 @@
-import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Feather, FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import * as Clipboard from "expo-clipboard";
 import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
   Image,
   Linking,
+  Platform,
   ScrollView,
   Share,
   StyleSheet,
@@ -15,6 +18,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function CouponDetailsScreen() {
   const insets = useSafeAreaInsets();
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   const params = useLocalSearchParams<{
     id: string;
     dealHeading: string;
@@ -24,18 +29,102 @@ export default function CouponDetailsScreen() {
 
   const dealHeading = params.dealHeading ?? "Coupon Deal";
   const dealDescription = params.dealDescription ?? "";
+  const dealUrl = `https://citydeals.app/deals/${params.id || "1"}`;
+  const shareMessage = `Check out this special offer on CityDeals! 🎉\n\n${dealHeading}\n${dealDescription}\n\nGet the coupon: ${dealUrl}`;
 
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
+  };
+
+  // General share handler
   const handleShareDeal = async () => {
     try {
-      const dealUrl = `https://citydeals.app/deals/${params.id || "1"}`;
       await Share.share({
         title: dealHeading,
-        message: `Check out this special offer on CityDeals! 🎉\n\n${dealHeading}\n${dealDescription}\n\nGet the coupon: ${dealUrl}`,
+        message: shareMessage,
         url: dealUrl,
       });
     } catch (error) {
       console.log("Error sharing deal:", error);
     }
+  };
+
+  // Open store / deal website
+  const handleOpenWebsite = () => {
+    Linking.openURL("https://mariaspizzeria.com").catch(() => {
+      Linking.openURL(dealUrl).catch(() => {});
+    });
+  };
+
+  // Share via Email
+  const handleShareEmail = () => {
+    const subject = encodeURIComponent(`Exclusive Deal: ${dealHeading}`);
+    const body = encodeURIComponent(shareMessage);
+    Linking.openURL(`mailto:?subject=${subject}&body=${body}`).catch(() => {
+      showToast("Unable to open email app.");
+    });
+  };
+
+  // Share to Facebook
+  const handleShareFacebook = () => {
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(dealUrl)}&quote=${encodeURIComponent(shareMessage)}`;
+    Linking.openURL(fbUrl).catch(() => {
+      Linking.openURL("https://facebook.com").catch(() => {});
+    });
+  };
+
+  // Share / Open Instagram (copies deal text to clipboard and opens Instagram Direct)
+  const handleShareInstagram = async () => {
+    try {
+      await Clipboard.setStringAsync(shareMessage);
+      showToast("Deal copied to clipboard! Paste it into Instagram chat.");
+      const canOpenDirect = await Linking.canOpenURL("instagram://direct");
+      if (canOpenDirect) {
+        await Linking.openURL("instagram://direct");
+      } else {
+        const canOpenApp = await Linking.canOpenURL("instagram://app");
+        if (canOpenApp) {
+          await Linking.openURL("instagram://app");
+        } else {
+          await Linking.openURL("https://www.instagram.com/direct/inbox/");
+        }
+      }
+    } catch {
+      await Linking.openURL("https://www.instagram.com");
+    }
+  };
+
+  // Share / Open TikTok (copies deal text to clipboard and opens TikTok Messages)
+  const handleShareTikTok = async () => {
+    try {
+      await Clipboard.setStringAsync(shareMessage);
+      showToast("Deal copied to clipboard! Paste it into TikTok chat.");
+      const canOpenTikTok = await Linking.canOpenURL("tiktok://messages");
+      if (canOpenTikTok) {
+        await Linking.openURL("tiktok://messages");
+      } else {
+        const canOpenApp = await Linking.canOpenURL("snssdk1233://");
+        if (canOpenApp) {
+          await Linking.openURL("snssdk1233://");
+        } else {
+          await Linking.openURL("https://www.tiktok.com/messages");
+        }
+      }
+    } catch {
+      await Linking.openURL("https://www.tiktok.com");
+    }
+  };
+
+  // Share via SMS / Message
+  const handleShareSMS = () => {
+    const separator = Platform.OS === "ios" ? "&" : "?";
+    const smsUrl = `sms:${separator}body=${encodeURIComponent(shareMessage)}`;
+    Linking.openURL(smsUrl).catch(() => {
+      showToast("Unable to open messaging app.");
+    });
   };
 
   // Header height = status bar + 12 top padding + 44 button + 16 bottom padding
@@ -68,9 +157,7 @@ export default function CouponDetailsScreen() {
           <Feather name="arrow-left" size={20} color="#1e293b" />
         </TouchableOpacity>
 
-        <Text className="text-white text-lg font-bold z-10">
-          Coupon Details
-        </Text>
+        <Text className="text-white text-lg font-bold z-10">Coupon Details</Text>
 
         <TouchableOpacity
           activeOpacity={0.8}
@@ -94,7 +181,7 @@ export default function CouponDetailsScreen() {
           <View className="rounded-3xl overflow-hidden border border-neutral-200">
             <Image
               source={require("../../../assets/images/placeholder-deal.jpg")}
-              className="w-full h-[60vh]"
+              className="w-full h-[420px]"
               resizeMode="cover"
             />
           </View>
@@ -104,7 +191,7 @@ export default function CouponDetailsScreen() {
         <View className="px-5 pt-5 bg-white">
           {/* Store logo + deal title row */}
           <View className="flex-row items-center mb-5">
-            <View className="w-12 h-12 rounded-full bg-amber-100 border-2 border-amber-400 items-center justify-center mr-3.5">
+            <View className="w-13 h-13 rounded-full bg-amber-100 border-2 border-amber-400 items-center justify-center mr-3.5">
               <Text className="text-2xl font-extrabold text-amber-700">
                 {dealHeading.charAt(0).toUpperCase()}
               </Text>
@@ -158,62 +245,80 @@ export default function CouponDetailsScreen() {
           {/* Divider */}
           <View className="h-px bg-neutral-100 mb-5" />
 
-          {/* Website + Learn More */}
+          {/* Website + Email Row */}
           <View className="flex-row gap-2 mb-3">
             <TouchableOpacity
               activeOpacity={0.85}
+              onPress={handleOpenWebsite}
               className="flex-1 flex-row items-center justify-center gap-2 rounded-2xl py-4 bg-[#111827] shadow-sm"
             >
               <Ionicons name="globe-outline" size={18} color="#ffffff" />
-              <Text className="text-white text-base font-semibold">
-                Website
-              </Text>
+              <Text className="text-white text-base font-semibold">Website</Text>
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.85}
+              onPress={handleShareEmail}
               className="flex-1 flex-row items-center justify-center gap-2 rounded-2xl py-4 bg-[#111827] shadow-sm"
             >
-              <Ionicons
-                name="information-circle-outline"
-                size={18}
-                color="#ffffff"
-              />
-              <Text className="text-white text-base font-semibold">
-                Learn More
-              </Text>
+              <Ionicons name="mail-outline" size={18} color="#ffffff" />
+              <Text className="text-white text-base font-semibold">Email</Text>
             </TouchableOpacity>
           </View>
 
-          {/* Social links */}
+          {/* Social & Sharing Links: Facebook, Instagram, TikTok, Message/SMS */}
           <View className="flex-row gap-2">
+            {/* Facebook */}
             <TouchableOpacity
               activeOpacity={0.85}
+              onPress={handleShareFacebook}
               className="flex-1 items-center justify-center rounded-2xl py-4 bg-[#111827] shadow-sm"
-              onPress={() =>
-                Linking.openURL("https://facebook.com").catch(() => {})
-              }
             >
               <FontAwesome name="facebook" size={22} color="#ffffff" />
             </TouchableOpacity>
+
+            {/* Instagram */}
             <TouchableOpacity
               activeOpacity={0.85}
+              onPress={handleShareInstagram}
               className="flex-1 items-center justify-center rounded-2xl py-4 bg-[#111827] shadow-sm"
-              onPress={() =>
-                Linking.openURL("https://instagram.com").catch(() => {})
-              }
             >
               <FontAwesome name="instagram" size={22} color="#ffffff" />
             </TouchableOpacity>
+
+            {/* TikTok */}
             <TouchableOpacity
               activeOpacity={0.85}
+              onPress={handleShareTikTok}
               className="flex-1 items-center justify-center rounded-2xl py-4 bg-[#111827] shadow-sm"
-              onPress={() => Linking.openURL("https://wa.me/").catch(() => {})}
             >
-              <FontAwesome name="whatsapp" size={22} color="#ffffff" />
+              <FontAwesome6 name="tiktok" size={20} color="#ffffff" />
+            </TouchableOpacity>
+
+            {/* Message / SMS */}
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={handleShareSMS}
+              className="flex-1 items-center justify-center rounded-2xl py-4 bg-[#111827] shadow-sm"
+            >
+              <Ionicons
+                name="chatbubble-ellipses-outline"
+                size={20}
+                color="#ffffff"
+              />
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
+
+      {/* Toast Notification Banner */}
+      {toastMessage && (
+        <View className="absolute bottom-10 left-6 right-6 z-50 bg-neutral-900/95 py-3.5 px-4 rounded-2xl flex-row items-center justify-center shadow-lg border border-neutral-700">
+          <Ionicons name="checkmark-circle" size={20} color="#ea580c" />
+          <Text className="text-white text-base font-semibold ml-2 text-center flex-1">
+            {toastMessage}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
