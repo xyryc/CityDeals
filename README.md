@@ -147,18 +147,6 @@ npx tsc --noEmit
 
 ---
 
-## Deep Linking and Web URLs
-
-Every coupon has its own unique shareable URL formatted as:
-
-```
-https://citydeals.ai/deals/[id]
-```
-
-When opened, the route resolves to the deal's coupon details screen and prompts guest or web visitors to download the app to redeem the offer in-store.
-
----
-
 ## License
 
 This project is licensed under the MIT License.
