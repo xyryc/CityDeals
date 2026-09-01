@@ -1,56 +1,164 @@
-# Welcome to your Expo app 👋
+# CityDeals
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+CityDeals is a modern mobile coupon and deals discovery application built with Expo (SDK 57), React Native, TypeScript, and NativeWind (Tailwind CSS). The application allows users to discover local discounts, browse deals by category and proximity, save favorites, share deals across platforms, and redeem coupons in-store.
 
-## Get started
+---
 
-1. Install dependencies
+## App Preview
+
+|                                     Demo                                     |                                Screen 1                                 |                                Screen 2                                 |                                Screen 3                                 |                                Screen 4                                 |
+| :--------------------------------------------------------------------------: | :---------------------------------------------------------------------: | :---------------------------------------------------------------------: | :---------------------------------------------------------------------: | :---------------------------------------------------------------------: |
+| <img src="screenshots/city_deals.gif" width="190" height="400" alt="Demo" /> | <img src="screenshots/1.png" width="190" height="400" alt="Screen 1" /> | <img src="screenshots/2.png" width="190" height="400" alt="Screen 2" /> | <img src="screenshots/3.png" width="190" height="400" alt="Screen 3" /> | <img src="screenshots/4.png" width="190" height="400" alt="Screen 4" /> |
+
+---
+
+## Features
+
+- Multi-Language Selection: Choose between United States, Spain, and Portugal languages with quick switching from profile settings.
+- Onboarding Experience: Interactive swipeable walkthrough highlighting core discount features.
+- Guest Browsing: Users can explore deals, browse categories, filter by radius, and view store information without signing up first.
+- Collapsible Sticky Header: Smooth 60fps native animated search bar on the home feed that minimizes on scroll up.
+- Category and Search Filtering: Real-time keyword filtering across headings, descriptions, and category tags.
+- Proximity & Distance Filters: Explore local deals with customizable distance radius chips.
+- Saved Coupons Feed: Store and manage favorite coupons with immediate heart toggles.
+- Coupon Redemption System: Gated redemption workflow requiring authentication, generating unique coupon codes and scannable QR codes for in-store checkout.
+- Multi-Platform Sharing: Native sharing to Email, SMS, Facebook, Instagram, and TikTok with clipboard copy fallbacks and deep links.
+- Profile and Settings: Manage account info, password updates, language preferences, notification toggles, help requests, and terms of use.
+
+---
+
+## Tech Stack
+
+- Framework: React Native with Expo (SDK 57)
+- Routing: Expo Router (File-based navigation)
+- Styling: NativeWind v4 (Tailwind CSS) with React Native StyleSheet hybrid patterns
+- Language: TypeScript
+- Icons: Expo Vector Icons (Ionicons, Feather, FontAwesome, FontAwesome6, MaterialCommunityIcons)
+- Safe Area & Layout: React Native Safe Area Context, React Native Screens
+
+---
+
+## Project Structure
+
+```
+CityDeals/
+├── assets/                  # App images, logos, and textures
+├── screenshots/             # Application screenshots and demo GIF
+├── src/
+│   ├── app/                 # Expo Router file-based routes
+│   │   ├── _layout.tsx      # Root stack navigation layout
+│   │   ├── index.tsx        # Language selection screen
+│   │   ├── onboarding.tsx   # Onboarding carousel
+│   │   ├── (auth)/          # Authentication routes (login, register)
+│   │   ├── (tabs)/          # Bottom tabs (Home, Nearby, Saved, Profile)
+│   │   ├── deals/[id].tsx   # Deep link and shared coupon route
+│   │   └── screens/         # Nested stack screens
+│   │       ├── coupon-details.tsx
+│   │       ├── account.tsx
+│   │       ├── change-password.tsx
+│   │       ├── help-support.tsx
+│   │       └── terms-of-use.tsx
+│   ├── components/          # Reusable UI components (DealCard, CurvedHeader, PrimaryButton, etc.)
+│   ├── config/              # Constants, mock deals, and language options
+│   └── providers/           # App providers and AuthProvider context
+├── app.json                 # Expo configuration
+├── package.json             # Project dependencies and scripts
+├── tailwind.config.js       # Tailwind CSS configuration
+└── tsconfig.json            # TypeScript configuration
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher recommended)
+- npm or yarn
+- Android Studio (for Android emulator) or Xcode (for iOS simulator, macOS only)
+- Physical device with USB debugging enabled (optional)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/xyryc/CityDeals.git
+   cd CityDeals
+   ```
+
+2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## Development and Build Commands
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### Start Development Server
 
 ```bash
-npm run reset-project
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Prebuild Native Directories
 
-### Other setup steps
+To generate fresh native iOS and Android project files:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npx expo prebuild --clean
+```
 
-## Learn more
+### Run on Device or Emulator
 
-To learn more about developing your project with Expo, look at the following resources:
+To build and run directly on a connected physical device or running emulator:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npx expo run --device
+```
 
-## Join the community
+For platform-specific targets:
 
-Join our community of developers creating universal apps.
+```bash
+# Android
+npx expo run:android --device
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# iOS (macOS only)
+npx expo run:ios --device
+```
+
+### Diagnostics and Health Check
+
+To diagnose project configuration, dependencies, and native setup:
+
+```bash
+npx expo-doctor --verbose
+```
+
+### TypeScript Validation
+
+To verify static types without emitting build artifacts:
+
+```bash
+npx tsc --noEmit
+```
+
+---
+
+## Deep Linking and Web URLs
+
+Every coupon has its own unique shareable URL formatted as:
+
+```
+https://citydeals.ai/deals/[id]
+```
+
+When opened, the route resolves to the deal's coupon details screen and prompts guest or web visitors to download the app to redeem the offer in-store.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
