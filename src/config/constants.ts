@@ -11,7 +11,7 @@ export interface LanguageOption {
 export const LANGUAGES: LanguageOption[] = [
   {
     id: "en",
-    name: "American",
+    name: "English",
     nativeName: "English (US)",
     flag: "🇺🇸",
   },

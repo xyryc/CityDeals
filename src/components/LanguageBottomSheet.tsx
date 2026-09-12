@@ -5,7 +5,7 @@ import AppBottomSheet from "./AppBottomSheet";
 import PrimaryButton from "./PrimaryButton";
 
 export const LANGUAGES = [
-  { id: "en", label: "American", flag: "🇺🇸", nativeName: "English (US)" },
+  { id: "en", label: "English", flag: "🇺🇸", nativeName: "English (US)" },
   { id: "es", label: "Spanish", flag: "🇪🇸", nativeName: "Español" },
   { id: "pt", label: "Brazilian", flag: "🇧🇷", nativeName: "Português" },
 ];

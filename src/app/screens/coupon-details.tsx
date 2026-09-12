@@ -18,6 +18,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MOCK_DEALS } from "../../config/constants";
 import { useAuth } from "../../providers/AuthProvider";
+import {
+  shareCouponWithSystemSheet,
+  shareToSocialPlatform,
+} from "../../utils/shareUtils";
 
 export default function CouponDetailsScreen() {
   const insets = useSafeAreaInsets();
@@ -74,17 +78,17 @@ export default function CouponDetailsScreen() {
     });
   };
 
-  // General share handler
+  // General share handler: Shares image file + app link via system share sheet
   const handleShareDeal = async () => {
-    try {
-      await Share.share({
-        title: dealHeading,
-        message: shareMessage,
-        url: dealUrl,
-      });
-    } catch (error) {
-      console.log("Error sharing deal:", error);
-    }
+    await shareCouponWithSystemSheet(
+      {
+        dealHeading,
+        dealDescription,
+        dealUrl,
+        imageSource: dealImage,
+      },
+      showToast
+    );
   };
 
   // Open store / deal website
@@ -103,63 +107,60 @@ export default function CouponDetailsScreen() {
     });
   };
 
-  // Share to Facebook
-  const handleShareFacebook = () => {
-    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(dealUrl)}&quote=${encodeURIComponent(shareMessage)}`;
-    Linking.openURL(fbUrl).catch(() => {
-      Linking.openURL("https://facebook.com").catch(() => {});
-    });
+  // Share to Facebook (with image file + app link)
+  const handleShareFacebook = async () => {
+    await shareToSocialPlatform(
+      "facebook",
+      {
+        dealHeading,
+        dealDescription,
+        dealUrl,
+        imageSource: dealImage,
+      },
+      showToast
+    );
   };
 
-  // Share / Open Instagram (copies deal text to clipboard and opens Instagram Direct)
+  // Share to Instagram (with image file + app link)
   const handleShareInstagram = async () => {
-    try {
-      await Clipboard.setStringAsync(shareMessage);
-      showToast("Deal copied to clipboard! Paste it into Instagram chat.");
-      const canOpenDirect = await Linking.canOpenURL("instagram://direct");
-      if (canOpenDirect) {
-        await Linking.openURL("instagram://direct");
-      } else {
-        const canOpenApp = await Linking.canOpenURL("instagram://app");
-        if (canOpenApp) {
-          await Linking.openURL("instagram://app");
-        } else {
-          await Linking.openURL("https://www.instagram.com/direct/inbox/");
-        }
-      }
-    } catch {
-      await Linking.openURL("https://www.instagram.com");
-    }
+    await shareToSocialPlatform(
+      "instagram",
+      {
+        dealHeading,
+        dealDescription,
+        dealUrl,
+        imageSource: dealImage,
+      },
+      showToast
+    );
   };
 
-  // Share / Open TikTok (copies deal text to clipboard and opens TikTok Messages)
+  // Share to TikTok (with image file + app link)
   const handleShareTikTok = async () => {
-    try {
-      await Clipboard.setStringAsync(shareMessage);
-      showToast("Deal copied to clipboard! Paste it into TikTok chat.");
-      const canOpenTikTok = await Linking.canOpenURL("tiktok://messages");
-      if (canOpenTikTok) {
-        await Linking.openURL("tiktok://messages");
-      } else {
-        const canOpenApp = await Linking.canOpenURL("snssdk1233://");
-        if (canOpenApp) {
-          await Linking.openURL("snssdk1233://");
-        } else {
-          await Linking.openURL("https://www.tiktok.com/messages");
-        }
-      }
-    } catch {
-      await Linking.openURL("https://www.tiktok.com");
-    }
+    await shareToSocialPlatform(
+      "tiktok",
+      {
+        dealHeading,
+        dealDescription,
+        dealUrl,
+        imageSource: dealImage,
+      },
+      showToast
+    );
   };
 
-  // Share via SMS / Message
-  const handleShareSMS = () => {
-    const separator = Platform.OS === "ios" ? "&" : "?";
-    const smsUrl = `sms:${separator}body=${encodeURIComponent(shareMessage)}`;
-    Linking.openURL(smsUrl).catch(() => {
-      showToast("Unable to open messaging app.");
-    });
+  // Share via SMS / Message (with image file + app link)
+  const handleShareSMS = async () => {
+    await shareToSocialPlatform(
+      "sms",
+      {
+        dealHeading,
+        dealDescription,
+        dealUrl,
+        imageSource: dealImage,
+      },
+      showToast
+    );
   };
 
   // Header height = status bar + 12 top padding + 44 button + 16 bottom padding

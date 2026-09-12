@@ -19,7 +19,7 @@ export default function ProfileScreen() {
   const [pushNotification, setPushNotification] = useState(true);
 
   // Language state & bottom sheet visibility
-  const [selectedLanguage, setSelectedLanguage] = useState("United States");
+  const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [isLanguageSheetOpen, setIsLanguageSheetOpen] = useState(false);
 
   const handleLogout = () => {
