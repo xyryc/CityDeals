@@ -11,19 +11,19 @@ export interface LanguageOption {
 export const LANGUAGES: LanguageOption[] = [
   {
     id: "en",
-    name: "United States",
+    name: "American",
     nativeName: "English (US)",
     flag: "🇺🇸",
   },
   {
     id: "es",
-    name: "Spain",
+    name: "Spanish",
     nativeName: "Español",
     flag: "🇪🇸",
   },
   {
     id: "pt",
-    name: "Portugal",
+    name: "Brazilian",
     nativeName: "Português",
     flag: "🇧🇷",
   },

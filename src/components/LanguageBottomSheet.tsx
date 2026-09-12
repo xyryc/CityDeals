@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import AppBottomSheet from "./AppBottomSheet";
 import PrimaryButton from "./PrimaryButton";
 
 export const LANGUAGES = [
-  { id: "en", label: "United States", flag: "🇺🇸", nativeName: "English (US)" },
-  { id: "es", label: "Spain", flag: "🇪🇸", nativeName: "Español" },
-  { id: "pt", label: "Portugal", flag: "🇧🇷", nativeName: "Português" },
+  { id: "en", label: "American", flag: "🇺🇸", nativeName: "English (US)" },
+  { id: "es", label: "Spanish", flag: "🇪🇸", nativeName: "Español" },
+  { id: "pt", label: "Brazilian", flag: "🇧🇷", nativeName: "Português" },
 ];
 
 interface LanguageBottomSheetProps {
